@@ -1,433 +1,309 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Username Store | Buy 3l 3c 3n 4l 4c 4n Usernames</title>
-
-  <!-- Use Poppins font for smoothness -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Username Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    /* Reset and base */
     * {
       box-sizing: border-box;
     }
+
     body {
-      margin:0; 
-      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-        Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      background: #121212; 
-      color: #eee;
-      display: flex; 
-      flex-direction: column; 
-      min-height: 100vh;
-      user-select: none;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #0f1218;
+      color: #fff;
+      overflow-x: hidden;
     }
+
     header {
-      background: #222; 
-      padding: 1.2rem 2rem;
-      font-size: 1.75rem; 
-      font-weight: 600; 
       text-align: center;
-      user-select: none;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      text-shadow: 0 0 8px rgba(57, 157, 255, 0.7);
-      letter-spacing: 0.05em;
+      padding: 2rem 1rem 1.2rem;
+      font-size: 2.6rem;
+      font-weight: 700;
+      background: linear-gradient(145deg, #0f131a, #141924);
+      color: #39d;
+      letter-spacing: 0.03em;
     }
+
     nav {
-      display: flex; 
-      justify-content: flex-start; 
-      background: #1f1f1f;
+      display: flex;
       overflow-x: auto;
-      scrollbar-width: thin;
-      scrollbar-color: #39d transparent;
-      padding: 0 1rem;
-      gap: 0.75rem;
-      user-select: none;
+      padding: 1rem 1rem 0.5rem;
+      gap: 1rem;
+      justify-content: flex-start;
+      scroll-behavior: smooth;
     }
+
     nav::-webkit-scrollbar {
       height: 6px;
     }
+
     nav::-webkit-scrollbar-thumb {
       background: #39d;
-      border-radius: 3px;
-    }
-    nav button {
-      background: none; 
-      border: none; 
-      color: #aaa; 
-      font-size: 1rem; 
-      padding: 0.9rem 2rem;
-      cursor: pointer; 
-      transition: color 0.3s ease, border-bottom 0.35s ease, filter 0.3s ease;
-      border-bottom: 3px solid transparent;
-      white-space: nowrap;
-      font-weight: 500;
-      border-radius: 6px 6px 0 0;
-      user-select: none;
-      -webkit-user-select: none;
-      box-shadow: inset 0 -3px 0 transparent;
-      text-shadow: 0 0 3px rgba(0,0,0,0.4);
-    }
-    nav button.active, nav button:hover {
-      color: #39d;
-      border-bottom-color: #39d;
-      filter: brightness(1.25);
-      box-shadow: inset 0 -3px 6px #39d;
-      text-shadow: 0 0 8px rgba(57, 157, 255, 0.9);
-    }
-    main {
-      flex: 1; 
-      padding: 2rem 3rem; 
-      max-width: 960px; 
-      margin: 0 auto;
-      user-select: none;
-    }
-    .username-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      grid-auto-flow: row;
-      gap: 1.4rem 2rem; /* row-gap and column-gap */
-      max-height: 70vh;
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: #39d transparent;
-      padding-right: 0.5rem;
-    }
-    .username-list::-webkit-scrollbar {
-      width: 8px;
-    }
-    .username-list::-webkit-scrollbar-thumb {
-      background: #39d;
-      border-radius: 5px;
-    }
-    .username-card {
-      background: rgba(25, 25, 25, 0.85);
-      border-radius: 12px;
-      padding: 1.25rem 1.5rem;
-      box-shadow: 0 0 18px rgba(57, 157, 255, 0.35);
-      display: flex; 
-      flex-direction: column; 
-      justify-content: space-between;
-      user-select: none;
-      -webkit-user-select: none;
-      position: relative;
-      overflow: hidden;
-      backdrop-filter: blur(10px);
-      border: 1.8px solid rgba(57, 157, 255, 0.3);
-      transition: box-shadow 0.4s ease, transform 0.3s ease;
-      cursor: default;
-    }
-    .username-card:hover {
-      box-shadow: 0 0 40px rgba(57, 157, 255, 0.75);
-      transform: translateY(-5px);
-    }
-    .username-card span {
-      font-weight: 600; 
-      font-size: 1.3rem; 
-      letter-spacing: 0.07em;
-      margin-bottom: 0.6rem;
-      color: #e0e6f2;
-      text-shadow: 0 0 10px rgba(0, 0, 0, 0.85);
-    }
-    .price {
-      color: #39d; 
-      font-weight: 600; 
-      margin-bottom: 1rem;
-      font-size: 1.1rem;
-      user-select: text;
-      letter-spacing: 0.05em;
-      text-shadow: 0 0 7px rgba(57, 157, 255, 0.7);
-    }
-    .btn-buy {
-      background: #39d; 
-      border: none; 
-      padding: 0.55rem 0;
-      border-radius: 8px; 
-      color: white; 
-      cursor: pointer;
-      font-weight: 600; 
-      transition: background 0.4s ease, filter 0.35s ease;
-      user-select: none;
-      -webkit-user-select: none;
-      box-shadow: 0 0 12px #39d;
-      font-size: 1.05rem;
-      letter-spacing: 0.04em;
-      text-shadow: 0 0 6px rgba(0,0,0,0.7);
-    }
-    .btn-buy:hover {
-      background: #2672c7;
-      filter: brightness(1.12);
-      box-shadow: 0 0 18px #2672c7;
+      border-radius: 4px;
     }
 
-    /* Custom Notification Overlay */
+    nav button {
+      flex: 0 0 auto;
+      background: #1a1e25;
+      border: 1px solid transparent;
+      padding: 0.8rem 1.4rem;
+      border-radius: 999px;
+      color: #fff;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 0 transparent;
+      cursor: pointer;
+    }
+
+    nav button:hover {
+      background: #273340;
+      border-color: #39d;
+      box-shadow: 0 0 8px #39d4;
+    }
+
+    nav button.active {
+      background: #39d;
+      color: #000;
+      box-shadow: 0 0 12px #39d9;
+      border: none;
+    }
+
+    main {
+      padding: 2rem 1rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .username-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1.6rem 2.2rem;
+    }
+
+    .username-card {
+      background: #161b22;
+      border-radius: 16px;
+      padding: 1.4rem 1.2rem;
+      text-align: center;
+      box-shadow: 0 0 14px rgba(0,0,0,0.25), 0 0 8px #39d2;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .username-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 0 20px #39d6;
+    }
+
+    .username-card span {
+      font-size: 1.4rem;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.6rem;
+    }
+
+    .price {
+      font-size: 1.1rem;
+      color: #39d;
+      margin-bottom: 0.7rem;
+      font-weight: 500;
+    }
+
+    .btn-buy {
+      background: #39d;
+      border: none;
+      color: #000;
+      padding: 0.55rem 1.2rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: background 0.3s, transform 0.2s;
+      box-shadow: 0 0 6px #39d4;
+    }
+
+    .btn-buy:hover {
+      background: #29c;
+      box-shadow: 0 0 12px #29c9;
+      transform: scale(1.04);
+    }
+
     #notification-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.80);
+      background: rgba(0, 0, 0, 0.6);
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
+      z-index: 10;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.35s ease;
-      z-index: 9999;
-      user-select: none;
-      -webkit-user-select: none;
-      backdrop-filter: blur(8px);
+      transition: opacity 0.4s ease;
     }
+
     #notification-overlay.show {
       opacity: 1;
-      pointer-events: auto;
+      pointer-events: all;
     }
+
     #notification-box {
-      background: rgba(25, 25, 25, 0.97);
-      border-radius: 14px;
-      padding: 2rem 3.2rem;
-      max-width: 340px;
+      background: #1b1f27;
+      padding: 2rem 2.5rem;
+      border-radius: 18px;
+      max-width: 360px;
+      width: 90%;
       text-align: center;
-      box-shadow: 0 0 45px #39d;
-      color: #eee;
-      user-select: none;
-      -webkit-user-select: none;
-      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px #39d6;
       position: relative;
-      font-weight: 600;
-      font-size: 1.15rem;
-      letter-spacing: 0.03em;
     }
+
     #notification-box h2 {
-      margin-top: 0; margin-bottom: 1.3rem;
+      margin-top: 0;
+      font-size: 1.6rem;
       font-weight: 700;
-      font-size: 1.5rem;
-      color: #39d;
-      text-shadow: 0 0 12px #39d;
-      user-select: text;
     }
+
     #notification-box p {
-      margin-bottom: 2rem;
-      font-size: 1.1rem;
-      line-height: 1.4;
-      user-select: text;
+      font-size: 1rem;
+      margin-bottom: 1.4rem;
+      color: #ccc;
     }
+
     #notification-box a {
       display: inline-block;
+      padding: 0.6rem 1.5rem;
       background: #39d;
-      color: white;
-      padding: 0.7rem 2rem;
-      border-radius: 8px;
-      font-weight: 700;
+      color: #000;
+      font-weight: 600;
+      border-radius: 999px;
       text-decoration: none;
-      box-shadow: 0 0 18px #39d;
-      transition: background 0.4s ease;
-      user-select: text;
-      font-size: 1.1rem;
-      letter-spacing: 0.05em;
+      transition: background 0.3s;
+      box-shadow: 0 0 10px #39d8;
     }
+
     #notification-box a:hover {
-      background: #2672c7;
-      box-shadow: 0 0 28px #2672c7;
+      background: #26b;
+      box-shadow: 0 0 16px #26b9;
     }
+
     #notification-close {
       position: absolute;
       top: 14px; right: 14px;
       background: none;
       border: none;
       color: #999;
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       cursor: pointer;
-      font-weight: 700;
-      transition: color 0.3s ease;
-      user-select: none;
     }
+
     #notification-close:hover {
-      color: #39d;
+      color: #fff;
     }
 
-    /* Scrollbar styles for main content if needed */
-    main::-webkit-scrollbar {
-      width: 6px;
-    }
-    main::-webkit-scrollbar-thumb {
-      background: #39d;
-      border-radius: 3px;
-    }
-
-    /* Responsive */
     @media (max-width: 720px) {
+      header {
+        font-size: 2.2rem;
+      }
       nav button {
-        padding: 0.7rem 1.25rem;
         font-size: 0.9rem;
+        padding: 0.6rem 1rem;
       }
-      main {
-        padding: 1.5rem 1rem;
-        max-width: 100%;
-      }
-      .username-card {
-        padding: 1rem 1.25rem;
+      .username-card span {
+        font-size: 1.2rem;
       }
       .btn-buy {
-        font-size: 1rem;
-        padding: 0.5rem 0;
+        font-size: 0.95rem;
       }
     }
   </style>
 </head>
 <body>
-  <header>Username Store</header>
-  <nav role="tablist" aria-label="Username categories">
-    <button class="active" role="tab" aria-selected="true" data-category="3l" tabindex="0">3L Usernames</button>
-    <button role="tab" aria-selected="false" data-category="3c" tabindex="-1">3C Usernames</button>
-    <button role="tab" aria-selected="false" data-category="3n" tabindex="-1">3N Usernames</button>
-    <button role="tab" aria-selected="false" data-category="4l" tabindex="-1">4L Usernames</button>
-    <button role="tab" aria-selected="false" data-category="4c" tabindex="-1">4C Usernames</button>
-    <button role="tab" aria-selected="false" data-category="4n" tabindex="-1">4N Usernames</button>
-  </nav>
-  <main>
-    <section class="username-list" id="username-container" tabindex="0" aria-live="polite" aria-relevant="additions"></section>
-  </main>
 
-  <!-- Notification overlay -->
-  <div id="notification-overlay" role="dialog" aria-modal="true" aria-labelledby="notification-title" tabindex="-1">
-    <div id="notification-box">
-      <button id="notification-close" aria-label="Close notification">&times;</button>
-      <h2 id="notification-title">Buy Usernames on Our Discord</h2>
-      <p>Please join our Discord server to purchase usernames.</p>
-      <a href="https://discord.gg/claimuser" target="_blank" rel="noopener noreferrer">Join Discord</a>
-    </div>
+<header>Username Store</header>
+<nav role="tablist" aria-label="Username categories">
+  <button class="active" role="tab" aria-selected="true" data-category="3l">3L Usernames</button>
+  <button role="tab" data-category="3c">3C Usernames</button>
+  <button role="tab" data-category="3n">3N Usernames</button>
+  <button role="tab" data-category="4l">4L Usernames</button>
+  <button role="tab" data-category="4c">4C Usernames</button>
+  <button role="tab" data-category="4n">4N Usernames</button>
+</nav>
+
+<main>
+  <section class="username-list" id="username-container"></section>
+</main>
+
+<!-- Notification -->
+<div id="notification-overlay">
+  <div id="notification-box">
+    <button id="notification-close" aria-label="Close notification">&times;</button>
+    <h2>Buy Usernames on Our Discord</h2>
+    <p>Please join our Discord server to purchase usernames.</p>
+    <a href="https://discord.gg/claimuser" target="_blank" rel="noopener noreferrer">Join Discord</a>
   </div>
+</div>
 
 <script>
-  // Username data
   const usernames = {
-    "3l": [
-      {name: "abc", price: 79},
-      {name: "cat", price: 89},
-      {name: "dog", price: 75},
-      {name: "fox", price: 65},
-      {name: "sky", price: 60},
-      {name: "zen", price: 70}
-    ],
-    "3c": [
-      {name: "x9z", price: 70},
-      {name: "m4n", price: 65},
-      {name: "t8r", price: 55},
-      {name: "q2w", price: 50}
-    ],
-    "3n": [
-      {name: "123", price: 50},
-      {name: "789", price: 45},
-      {name: "456", price: 40},
-      {name: "321", price: 38}
-    ],
-    "4l": [
-      {name: "love", price: 120},
-      {name: "fire", price: 110},
-      {name: "star", price: 115},
-      {name: "moon", price: 108}
-    ],
-    "4c": [
-      {name: "4b7c", price: 95},
-      {name: "m8n2", price: 90},
-      {name: "k9p3", price: 88},
-      {name: "j7q1", price: 85}
-    ],
-    "4n": [
-      {name: "2023", price: 60},
-      {name: "4040", price: 55},
-      {name: "8080", price: 58},
-      {name: "9090", price: 57}
-    ]
+    "3l": [ {name: "abc", price: 79}, {name: "cat", price: 89}, {name: "dog", price: 75}, {name: "fox", price: 65}, {name: "sky", price: 60}, {name: "zen", price: 70} ],
+    "3c": [ {name: "x9z", price: 70}, {name: "m4n", price: 65}, {name: "t8r", price: 55}, {name: "q2w", price: 50} ],
+    "3n": [ {name: "123", price: 50}, {name: "789", price: 45}, {name: "456", price: 40}, {name: "321", price: 38} ],
+    "4l": [ {name: "love", price: 120}, {name: "fire", price: 110}, {name: "star", price: 115}, {name: "moon", price: 108} ],
+    "4c": [ {name: "4b7c", price: 95}, {name: "m8n2", price: 90}, {name: "k9p3", price: 88}, {name: "j7q1", price: 85} ],
+    "4n": [ {name: "2023", price: 60}, {name: "4040", price: 55}, {name: "8080", price: 58}, {name: "9090", price: 57} ]
   };
 
   const container = document.getElementById('username-container');
   const navButtons = document.querySelectorAll('nav button');
-  const notificationOverlay = document.getElementById('notification-overlay');
-  const notificationClose = document.getElementById('notification-close');
+  const overlay = document.getElementById('notification-overlay');
+  const closeBtn = document.getElementById('notification-close');
 
   function renderUsernames(category) {
     container.innerHTML = '';
-    if (!usernames[category]) {
-      container.innerHTML = '<p>No usernames available in this category.</p>';
-      return;
-    }
+    if (!usernames[category]) return;
     usernames[category].forEach(u => {
       const card = document.createElement('div');
       card.className = 'username-card';
-
       card.innerHTML = `
         <span>${u.name}</span>
         <div class="price">$${u.price}</div>
-        <button class="btn-buy" aria-label="Buy username ${u.name}">Buy</button>
+        <button class="btn-buy">Buy</button>
       `;
-
-      const buyBtn = card.querySelector('.btn-buy');
-      buyBtn.addEventListener('click', () => showNotification());
-
+      card.querySelector('.btn-buy').addEventListener('click', () => showNotification());
       container.appendChild(card);
     });
   }
 
   function showNotification() {
-    notificationOverlay.classList.add('show');
-    notificationOverlay.focus();
+    overlay.classList.add('show');
+    overlay.focus();
   }
 
   function hideNotification() {
-    notificationOverlay.classList.remove('show');
+    overlay.classList.remove('show');
   }
 
-  // Handle keyboard focus for tabs
-  navButtons.forEach((button, idx) => {
-    button.addEventListener('click', () => {
-      navButtons.forEach(btn => {
-        btn.classList.remove('active');
-        btn.setAttribute('aria-selected', 'false');
-        btn.tabIndex = -1;
-      });
-      button.classList.add('active');
-      button.setAttribute('aria-selected', 'true');
-      button.tabIndex = 0;
-      button.focus();
-      renderUsernames(button.getAttribute('data-category'));
-    });
-
-    // Keyboard navigation between tabs (Left/Right arrows)
-    button.addEventListener('keydown', (e) => {
-      let newIndex = null;
-      if (e.key === 'ArrowRight') {
-        newIndex = (idx + 1) % navButtons.length;
-        e.preventDefault();
-      } else if (e.key === 'ArrowLeft') {
-        newIndex = (idx - 1 + navButtons.length) % navButtons.length;
-        e.preventDefault();
-      }
-      if (newIndex !== null) {
-        navButtons[newIndex].click();
-      }
-    });
+  closeBtn.addEventListener('click', hideNotification);
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) hideNotification();
   });
-
-  notificationClose.addEventListener('click', hideNotification);
-
-  notificationOverlay.addEventListener('click', e => {
-    if(e.target === notificationOverlay) hideNotification();
-  });
-
   window.addEventListener('keydown', e => {
-    if (e.key === "Escape" && notificationOverlay.classList.contains('show')) {
-      hideNotification();
-    }
+    if (e.key === "Escape") hideNotification();
   });
 
-  // Initial render
-  renderUsernames('3l');
+  navButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      navButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderUsernames(btn.getAttribute('data-category'));
+    });
+  });
+
+  renderUsernames("3l");
 </script>
 
 </body>
