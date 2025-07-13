@@ -1,108 +1,390 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>claimuser.xyz – Buy rare discord usernames for cheap</title>
-  <link rel="icon" type="image/x-icon" href="favicon.ico" />
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>claimuser.xyz – Buy rare Discord usernames for cheap</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+
+  body {
+    background: linear-gradient(135deg, #121212, #1f1f1f);
+    color: #eee;
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-x: hidden;
+    user-select: none; /* Disable text selection globally */
+  }
+
+  /* Disable image dragging */
+  img, button, a {
+    -webkit-user-drag: none;
+    user-drag: none;
+  }
+
+  /* Disable context menu (right-click) */
+  body, .container {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Safari */
+    -khtml-user-select: none;    /* Konqueror HTML */
+    -moz-user-select: none;      /* Old Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
+    user-select: none;           /* Non-prefixed version */
+  }
+
+  .container {
+    background: rgba(255 255 255 / 0.08);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    max-width: 700px;
+    width: 100%;
+    padding: 40px 30px 50px;
+    box-shadow: 0 0 45px rgba(0, 191, 255, 0.35);
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s ease forwards;
+    border: 1.5px solid rgba(0, 191, 255, 0.3);
+    position: relative;
+  }
+
+  header h1 {
+    font-size: 3rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #00bfff;
+    letter-spacing: 0.05em;
+    user-select: none;
+    text-shadow: 0 0 8px rgba(0, 191, 255, 0.7);
+    outline: 1.5px solid rgba(0, 191, 255, 0.3);
+    border-radius: 8px;
+    padding: 6px 12px;
+    display: inline-block;
+    backdrop-filter: blur(8px);
+    background: rgba(255 255 255 / 0.05);
+  }
+
+  header p {
+    color: #bbb;
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    user-select: none;
+    text-shadow: 0 0 5px rgba(0, 191, 255, 0.4);
+  }
+
+  /* Tabs */
+
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+  }
+
+  .tab {
+    cursor: pointer;
+    padding: 12px 28px;
+    background: rgba(0, 191, 255, 0.15);
+    color: #00bfff;
+    font-weight: 600;
+    border-radius: 12px;
+    user-select: none;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 0 5px rgba(0, 191, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    outline: 1px solid rgba(0, 191, 255, 0.2);
+    backdrop-filter: blur(6px);
+    background: rgba(0, 191, 255, 0.1);
+  }
+
+  .tab:hover {
+    background: rgba(0, 191, 255, 0.3);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 191, 255, 0.4);
+  }
+
+  .tab.active {
+    background: #00bfff;
+    color: #121212;
+    box-shadow: 0 0 20px #00bfff;
+    transform: scale(1.1);
+    outline: 2px solid #00e0ff;
+  }
+
+  /* Ripple effect on tab click */
+  .tab:after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    background: rgba(255, 255, 255, 0.15);
+    width: 100%;
+    height: 100%;
+    top: 0; left: 0;
+    pointer-events: none;
+    transition: transform 0.5s ease, opacity 1s ease;
+    opacity: 0;
+  }
+
+  .tab.ripple:after {
+    transform: scale(2);
+    opacity: 1;
+    transition: transform 0.5s ease, opacity 0.8s ease;
+  }
+
+  /* Username list */
+
+  .usernames-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    min-height: 140px;
+    margin-bottom: 40px;
+    user-select: none;
+    opacity: 1;
+    transition: opacity 0.35s ease;
+  }
+
+  .usernames-list.fade-out {
+    opacity: 0;
+  }
+
+  .username {
+    background: rgba(255 255 255 / 0.12);
+    border-radius: 12px;
+    padding: 14px 22px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #00d4ff;
+    box-shadow: 0 0 8px rgba(0, 212, 255, 0.35);
+    transition: background 0.3s ease, transform 0.3s ease;
+    cursor: default;
+    position: relative;
+    outline: 1px solid rgba(0, 212, 255, 0.25);
+    backdrop-filter: blur(6px);
+    user-select: none;
+  }
+
+  .username:hover {
+    background: rgba(0, 191, 255, 0.25);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 212, 255, 0.45);
+  }
+
+  /* Buy button */
+
+  .cta-button {
+    display: inline-block;
+    background-color: #00bfff;
+    color: #121212;
+    font-weight: 700;
+    padding: 16px 36px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 1.25rem;
+    box-shadow: 0 0 22px #00bfff;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+    outline: 2px solid rgba(0, 191, 255, 0.7);
+    backdrop-filter: blur(8px);
+    background: rgba(255 255 255 / 0.12);
+  }
+
+  .cta-button:hover {
+    background-color: #009adf;
+    transform: scale(1.04);
+    box-shadow: 0 0 30px #00e0ff;
+  }
+
+  /* Ripple effect on button */
+  .cta-button:after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    background: rgba(255, 255, 255, 0.2);
+    width: 100%;
+    height: 100%;
+    top: 0; left: 0;
+    pointer-events: none;
+    transition: transform 0.5s ease, opacity 1s ease;
+    opacity: 0;
+  }
+
+  .cta-button.ripple:after {
+    transform: scale(2);
+    opacity: 1;
+    transition: transform 0.5s ease, opacity 0.7s ease;
+  }
+
+  /* Footer */
+
+  footer {
+    margin-top: 40px;
+    font-size: 0.9rem;
+    color: #666;
+    user-select: none;
+    filter: drop-shadow(0 0 3px rgba(0, 191, 255, 0.3));
+  }
+
+  /* Animations */
+
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
     }
-
-    body {
-      background: linear-gradient(to right, #1f1f1f, #121212);
-      color: #fff;
-      font-family: 'Poppins', sans-serif;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      transition: all 0.4s ease-in-out;
+    100% {
+      opacity: 1;
+      transform: translateY(0);
     }
+  }
 
-    .container {
-      max-width: 600px;
-      padding: 40px;
-      background-color: rgba(255, 255, 255, 0.05);
-      border-radius: 20px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(10px);
-    }
+  /* Responsive */
 
+  @media (max-width: 600px) {
     header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
+      font-size: 2.2rem;
     }
 
-    .highlight {
-      color: #00bfff;
-      font-weight: 600;
+    .tabs {
+      gap: 8px;
     }
 
-    header p {
-      font-size: 1.1rem;
-      color: #ccc;
+    .tab {
+      padding: 10px 20px;
+      font-size: 0.9rem;
+    }
+
+    .username {
+      font-size: 1rem;
+      padding: 12px 18px;
     }
 
     .cta-button {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 14px 28px;
-      background-color: #00bfff;
-      color: #000;
-      font-weight: bold;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: transform 0.3s ease, background 0.3s ease;
+      width: 100%;
+      padding: 16px 0;
+      font-size: 1.1rem;
     }
-
-    .cta-button:hover {
-      background-color: #00a8e8;
-      transform: scale(1.05);
-    }
-
-    footer {
-      margin-top: 40px;
-      font-size: 0.9rem;
-      color: #888;
-    }
-
-    @media (max-width: 600px) {
-      .container {
-        margin: 20px;
-        padding: 30px 20px;
-      }
-
-      header h1 {
-        font-size: 2rem;
-      }
-
-      .cta-button {
-        width: 100%;
-      }
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
-  <div class="container">
+  <div class="container" role="main" tabindex="-1">
     <header>
-      <h1><span class="highlight">claimuser</span>.xyz</h1>
-      <p></p>
+      <h1>claimuser.xyz</h1>
+      <p>Buy rare Discord usernames for cheap</p>
     </header>
 
-    <main>
-      <a href="#buy" class="cta-button">Buy usernames</a>
-    </main>
+    <nav class="tabs" role="tablist" aria-label="Username categories">
+      <button class="tab active" role="tab" aria-selected="true" aria-controls="tab-3L" id="tabbtn-3L">3L</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="tab-3C" id="tabbtn-3C">3C</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="tab-4L" id="tabbtn-4L">4L</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="tab-4C" id="tabbtn-4C">4C</button>
+    </nav>
+
+    <section aria-live="polite" aria-atomic="true" id="usernames-container">
+      <div class="usernames-list" id="usernames-list">
+        <!-- Usernames inserted here -->
+      </div>
+    </section>
+
+    <button class="cta-button" aria-label="Buy selected username">Buy Now</button>
 
     <footer>
-      <p>&copy; 2025 claimuser.xyz – All right reserved</p>
+      &copy; 2025 claimuser.xyz — All rights reserved.
     </footer>
   </div>
+
+  <audio id="click-sound" src="https://assets.codepen.io/605876/click_4.wav" preload="auto"></audio>
+
+<script>
+  const categories = {
+    '3L': ['aaa', 'bbb', 'ccc', 'ddd', 'eee', 'fff'],
+    '3C': ['abc', 'def', 'ghi', 'jkl', 'mno', 'pqr'],
+    '4L': ['aaaa', 'bbbb', 'cccc', 'dddd', 'eeee', 'ffff'],
+    '4C': ['abcd', 'efgh', 'ijkl', 'mnop', 'qrst', 'uvwx']
+  };
+
+  const usernamesList = document.getElementById('usernames-list');
+  const tabs = document.querySelectorAll('.tab');
+  const clickSound = document.getElementById('click-sound');
+
+  function playClick() {
+    clickSound.currentTime = 0;
+    clickSound.volume = 0.15;
+    clickSound.play();
+  }
+
+  function renderUsernames(category) {
+    // Fade out old usernames
+    usernamesList.classList.add('fade-out');
+    setTimeout(() => {
+      usernamesList.innerHTML = '';
+      categories[category].forEach(username => {
+        const div = document.createElement('div');
+        div.className = 'username';
+        div.textContent = username;
+        usernamesList.appendChild(div);
+      });
+      usernamesList.classList.remove('fade-out');
+    }, 300);
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', e => {
+      e.preventDefault();
+      playClick();
+
+      // Ripple effect
+      tab.classList.add('ripple');
+      setTimeout(() => tab.classList.remove('ripple'), 600);
+
+      if (tab.classList.contains('active')) return;
+
+      tabs.forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+
+      const category = tab.textContent.trim();
+      renderUsernames(category);
+    });
+  });
+
+  const buyBtn = document.querySelector('.cta-button');
+  buyBtn.addEventListener('click', e => {
+    e.preventDefault();
+    playClick();
+
+    buyBtn.classList.add('ripple');
+    setTimeout(() => buyBtn.classList.remove('ripple'), 700);
+
+    alert("Buy button clicked!");
+  });
+
+  // Initial render
+  renderUsernames('3L');
+
+  // Disable right click everywhere
+  window.addEventListener('contextmenu', e => e.preventDefault());
+</script>
 </body>
 </html>
