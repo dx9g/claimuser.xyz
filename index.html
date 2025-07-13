@@ -3,283 +3,205 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>claimuser.xyz – Buy rare Discord usernames for cheap</title>
-<link rel="icon" type="image/x-icon" href="favicon.ico" />
+<title>claimuser.xyz</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 
+  /* Reset */
   * {
-    margin: 0; padding: 0; box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  html, body {
+    height: 100%;
+    background: #121212;
+    font-family: 'Inter', sans-serif;
+    color: #eee;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
-    background: linear-gradient(135deg, #121212, #1f1f1f);
-    color: #eee;
-    font-family: 'Poppins', sans-serif;
-    min-height: 100vh;
     display: flex;
-    align-items: center;
     justify-content: center;
-    padding: 20px;
-    overflow-x: hidden;
-    user-select: none; /* Disable text selection globally */
-  }
-
-  /* Disable image dragging */
-  img, button, a {
-    -webkit-user-drag: none;
-    user-drag: none;
-  }
-
-  /* Disable context menu (right-click) */
-  body, .container {
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none;   /* Safari */
-    -khtml-user-select: none;    /* Konqueror HTML */
-    -moz-user-select: none;      /* Old Firefox */
-    -ms-user-select: none;       /* Internet Explorer/Edge */
-    user-select: none;           /* Non-prefixed version */
+    align-items: center;
+    padding: 2rem;
   }
 
   .container {
-    background: rgba(255 255 255 / 0.08);
-    backdrop-filter: blur(20px);
-    border-radius: 24px;
-    max-width: 700px;
-    width: 100%;
-    padding: 40px 30px 50px;
-    box-shadow: 0 0 45px rgba(0, 191, 255, 0.35);
-    text-align: center;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 0.8s ease forwards;
-    border: 1.5px solid rgba(0, 191, 255, 0.3);
-    position: relative;
+    background: rgba(255 255 255 / 0.07);
+    border-radius: 1rem;
+    box-shadow:
+      0 4px 30px rgba(0,0,0,0.9),
+      inset 0 0 50px rgba(255 255 255 / 0.05);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    width: 420px;
+    max-width: 100%;
+    padding: 2rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    user-select: none;
   }
 
   header h1 {
-    font-size: 3rem;
-    font-weight: 600;
-    margin-bottom: 10px;
-    color: #00bfff;
-    letter-spacing: 0.05em;
-    user-select: none;
-    text-shadow: 0 0 8px rgba(0, 191, 255, 0.7);
-    outline: 1.5px solid rgba(0, 191, 255, 0.3);
-    border-radius: 8px;
-    padding: 6px 12px;
-    display: inline-block;
-    backdrop-filter: blur(8px);
-    background: rgba(255 255 255 / 0.05);
+    font-size: 2.4rem;
+    font-weight: 700;
+    text-shadow: 0 0 8px #64d2ffaa, 0 0 20px #3bc1ff88;
+    letter-spacing: 0.06em;
+    color: #e0f7ff;
   }
 
   header p {
-    color: #bbb;
-    font-size: 1.2rem;
-    margin-bottom: 40px;
-    user-select: none;
-    text-shadow: 0 0 5px rgba(0, 191, 255, 0.4);
+    color: #a3b8c2cc;
+    font-weight: 400;
+    font-size: 1rem;
+    text-shadow: 0 0 4px rgba(0,0,0,0.7);
   }
 
-  /* Tabs */
-
-  .tabs {
+  nav[role="tablist"] {
     display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 30px;
-    flex-wrap: wrap;
+    gap: 1rem;
   }
 
-  .tab {
-    cursor: pointer;
-    padding: 12px 28px;
-    background: rgba(0, 191, 255, 0.15);
-    color: #00bfff;
+  nav button[role="tab"] {
+    background: rgba(255 255 255 / 0.08);
+    border: none;
+    border-radius: 0.8rem;
+    padding: 0.65rem 1.4rem;
+    font-size: 1rem;
     font-weight: 600;
-    border-radius: 12px;
-    user-select: none;
-    transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 0 5px rgba(0, 191, 255, 0.1);
-    position: relative;
-    overflow: hidden;
-    outline: 1px solid rgba(0, 191, 255, 0.2);
-    backdrop-filter: blur(6px);
-    background: rgba(0, 191, 255, 0.1);
+    color: #d2e9ffcc;
+    cursor: pointer;
+    box-shadow:
+      0 2px 8px rgba(0,0,0,0.6),
+      inset 0 -1px 1px rgba(255 255 255 / 0.3);
+    transition:
+      background 0.3s ease,
+      color 0.3s ease,
+      box-shadow 0.3s ease,
+      text-shadow 0.3s ease;
+    text-shadow: 0 0 3px transparent;
+    backdrop-filter: blur(12px);
   }
 
-  .tab:hover {
-    background: rgba(0, 191, 255, 0.3);
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(0, 191, 255, 0.4);
+  nav button[role="tab"][aria-selected="true"] {
+    background: rgba(100 210 255 / 0.6);
+    color: #fff;
+    text-shadow: 0 0 8px #64d2ffdd, 0 0 15px #3bc1ffcc;
+    box-shadow:
+      0 0 18px #3bc1ffcc,
+      0 0 25px #64d2ffdd,
+      inset 0 0 8px #64d2ffcc;
+    cursor: default;
   }
 
-  .tab.active {
-    background: #00bfff;
-    color: #121212;
-    box-shadow: 0 0 20px #00bfff;
-    transform: scale(1.1);
-    outline: 2px solid #00e0ff;
+  nav button[role="tab"]:focus-visible {
+    outline: 2px solid #64d2ffdd;
+    outline-offset: 2px;
+    box-shadow:
+      0 0 25px #64d2ffcc,
+      inset 0 0 10px #64d2ffcc;
   }
 
-  /* Ripple effect on tab click */
-  .tab:after {
-    content: "";
-    position: absolute;
-    border-radius: 50%;
-    transform: scale(0);
-    background: rgba(255, 255, 255, 0.15);
-    width: 100%;
-    height: 100%;
-    top: 0; left: 0;
-    pointer-events: none;
-    transition: transform 0.5s ease, opacity 1s ease;
-    opacity: 0;
-  }
-
-  .tab.ripple:after {
-    transform: scale(2);
-    opacity: 1;
-    transition: transform 0.5s ease, opacity 0.8s ease;
-  }
-
-  /* Username list */
-
-  .usernames-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 16px;
-    min-height: 140px;
-    margin-bottom: 40px;
-    user-select: none;
-    opacity: 1;
+  #usernames-list {
+    background: rgba(255 255 255 / 0.06);
+    border-radius: 1rem;
+    padding: 1rem 1.5rem;
+    max-height: 190px;
+    overflow-y: auto;
+    box-shadow:
+      0 8px 24px rgba(0,0,0,0.75),
+      inset 0 0 18px rgba(255 255 255 / 0.1);
+    backdrop-filter: blur(15px);
     transition: opacity 0.35s ease;
+    color: #d2e9ffdd;
+    font-weight: 600;
+    text-shadow: 0 0 4px rgba(0,0,0,0.5);
   }
 
-  .usernames-list.fade-out {
+  #usernames-list.fade-out {
     opacity: 0;
+  }
+  #usernames-list.fade-in {
+    opacity: 1;
   }
 
   .username {
-    background: rgba(255 255 255 / 0.12);
-    border-radius: 12px;
-    padding: 14px 22px;
-    font-weight: 600;
-    font-size: 1.1rem;
-    color: #00d4ff;
-    box-shadow: 0 0 8px rgba(0, 212, 255, 0.35);
-    transition: background 0.3s ease, transform 0.3s ease;
-    cursor: default;
-    position: relative;
-    outline: 1px solid rgba(0, 212, 255, 0.25);
-    backdrop-filter: blur(6px);
+    padding: 0.3rem 0.4rem;
+    margin-bottom: 0.4rem;
+    border-radius: 0.4rem;
+    cursor: pointer;
     user-select: none;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 0 4px rgba(0,0,0,0.4);
   }
-
   .username:hover {
-    background: rgba(0, 191, 255, 0.25);
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 212, 255, 0.45);
+    background: rgba(100 210 255 / 0.35);
+    box-shadow:
+      0 0 8px #3bc1ffaa,
+      0 0 12px #64d2ffbb;
+    color: #ffffffee;
   }
-
-  /* Buy button */
 
   .cta-button {
-    display: inline-block;
-    background-color: #00bfff;
-    color: #121212;
+    background: rgba(100 210 255 / 0.7);
+    color: #f0f9ff;
     font-weight: 700;
-    padding: 16px 36px;
-    border-radius: 12px;
-    text-decoration: none;
-    font-size: 1.25rem;
-    box-shadow: 0 0 22px #00bfff;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    border: none;
+    border-radius: 1.2rem;
+    padding: 1rem 0;
+    font-size: 1.3rem;
+    box-shadow:
+      0 6px 15px #3bc1ffbb,
+      inset 0 0 15px #64d2ffcc;
+    cursor: pointer;
     user-select: none;
-    position: relative;
-    overflow: hidden;
-    outline: 2px solid rgba(0, 191, 255, 0.7);
-    backdrop-filter: blur(8px);
-    background: rgba(255 255 255 / 0.12);
+    transition:
+      background 0.4s ease,
+      box-shadow 0.3s ease;
+    text-shadow: 0 0 12px #64d2ffee;
+    backdrop-filter: blur(12px);
   }
 
   .cta-button:hover {
-    background-color: #009adf;
-    transform: scale(1.04);
-    box-shadow: 0 0 30px #00e0ff;
+    background: #42b6ff;
+    box-shadow:
+      0 8px 24px #42b6ffcc,
+      inset 0 0 20px #3bc1ffdd;
   }
 
-  /* Ripple effect on button */
-  .cta-button:after {
-    content: "";
-    position: absolute;
-    border-radius: 50%;
-    transform: scale(0);
-    background: rgba(255, 255, 255, 0.2);
-    width: 100%;
-    height: 100%;
-    top: 0; left: 0;
-    pointer-events: none;
-    transition: transform 0.5s ease, opacity 1s ease;
-    opacity: 0;
+  .cta-button:focus-visible {
+    outline: 2px solid #64d2ffdd;
+    outline-offset: 3px;
+    box-shadow:
+      0 0 30px #64d2ffcc,
+      inset 0 0 20px #64d2ffcc;
   }
-
-  .cta-button.ripple:after {
-    transform: scale(2);
-    opacity: 1;
-    transition: transform 0.5s ease, opacity 0.7s ease;
-  }
-
-  /* Footer */
 
   footer {
-    margin-top: 40px;
-    font-size: 0.9rem;
-    color: #666;
+    text-align: center;
+    color: #555f6acc;
+    font-size: 0.85rem;
+    font-weight: 400;
     user-select: none;
-    filter: drop-shadow(0 0 3px rgba(0, 191, 255, 0.3));
+    margin-top: 1rem;
+    text-shadow: 0 0 2px rgba(0,0,0,0.6);
   }
 
-  /* Animations */
-
-  @keyframes fadeInUp {
-    0% {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  /* Scrollbar styling for usernames */
+  #usernames-list::-webkit-scrollbar {
+    width: 8px;
   }
-
-  /* Responsive */
-
-  @media (max-width: 600px) {
-    header h1 {
-      font-size: 2.2rem;
-    }
-
-    .tabs {
-      gap: 8px;
-    }
-
-    .tab {
-      padding: 10px 20px;
-      font-size: 0.9rem;
-    }
-
-    .username {
-      font-size: 1rem;
-      padding: 12px 18px;
-    }
-
-    .cta-button {
-      width: 100%;
-      padding: 16px 0;
-      font-size: 1.1rem;
-    }
+  #usernames-list::-webkit-scrollbar-thumb {
+    background: rgba(100 210 255 / 0.5);
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  }
+  #usernames-list::-webkit-scrollbar-track {
+    background: transparent;
   }
 </style>
 </head>
@@ -287,20 +209,18 @@
   <div class="container" role="main" tabindex="-1">
     <header>
       <h1>claimuser.xyz</h1>
-      <p>Buy rare Discord usernames for cheap</p>
+      <p>Buy rare Discord usernames with ease</p>
     </header>
 
-    <nav class="tabs" role="tablist" aria-label="Username categories">
-      <button class="tab active" role="tab" aria-selected="true" aria-controls="tab-3L" id="tabbtn-3L">3L</button>
-      <button class="tab" role="tab" aria-selected="false" aria-controls="tab-3C" id="tabbtn-3C">3C</button>
-      <button class="tab" role="tab" aria-selected="false" aria-controls="tab-4L" id="tabbtn-4L">4L</button>
-      <button class="tab" role="tab" aria-selected="false" aria-controls="tab-4C" id="tabbtn-4C">4C</button>
+    <nav role="tablist" aria-label="Username categories">
+      <button role="tab" aria-selected="true" aria-controls="panel-3L" id="tab-3L" tabindex="0">3L</button>
+      <button role="tab" aria-selected="false" aria-controls="panel-3C" id="tab-3C" tabindex="-1">3C</button>
+      <button role="tab" aria-selected="false" aria-controls="panel-4L" id="tab-4L" tabindex="-1">4L</button>
+      <button role="tab" aria-selected="false" aria-controls="panel-4C" id="tab-4C" tabindex="-1">4C</button>
     </nav>
 
-    <section aria-live="polite" aria-atomic="true" id="usernames-container">
-      <div class="usernames-list" id="usernames-list">
-        <!-- Usernames inserted here -->
-      </div>
+    <section id="usernames-list" aria-live="polite" aria-atomic="true" tabindex="0" role="tabpanel" aria-labelledby="tab-3L">
+      <!-- Usernames will appear here -->
     </section>
 
     <button class="cta-button" aria-label="Buy selected username">Buy Now</button>
@@ -312,79 +232,102 @@
 
   <audio id="click-sound" src="https://assets.codepen.io/605876/click_4.wav" preload="auto"></audio>
 
-<script>
-  const categories = {
-    '3L': ['aaa', 'bbb', 'ccc', 'ddd', 'eee', 'fff'],
-    '3C': ['abc', 'def', 'ghi', 'jkl', 'mno', 'pqr'],
-    '4L': ['aaaa', 'bbbb', 'cccc', 'dddd', 'eeee', 'ffff'],
-    '4C': ['abcd', 'efgh', 'ijkl', 'mnop', 'qrst', 'uvwx']
-  };
+  <script>
+    const categories = {
+      '3L': ['aaa', 'bbb', 'ccc', 'ddd', 'eee', 'fff'],
+      '3C': ['abc', 'def', 'ghi', 'jkl', 'mno', 'pqr'],
+      '4L': ['aaaa', 'bbbb', 'cccc', 'dddd', 'eeee', 'ffff'],
+      '4C': ['abcd', 'efgh', 'ijkl', 'mnop', 'qrst', 'uvwx']
+    };
 
-  const usernamesList = document.getElementById('usernames-list');
-  const tabs = document.querySelectorAll('.tab');
-  const clickSound = document.getElementById('click-sound');
+    const usernamesList = document.getElementById('usernames-list');
+    const tabs = document.querySelectorAll('nav[role="tablist"] button[role="tab"]');
+    const clickSound = document.getElementById('click-sound');
+    const buyBtn = document.querySelector('.cta-button');
+    let currentCategory = '3L';
 
-  function playClick() {
-    clickSound.currentTime = 0;
-    clickSound.volume = 0.15;
-    clickSound.play();
-  }
+    function playClick() {
+      clickSound.currentTime = 0;
+      clickSound.volume = 0.15;
+      clickSound.play();
+    }
 
-  function renderUsernames(category) {
-    // Fade out old usernames
-    usernamesList.classList.add('fade-out');
-    setTimeout(() => {
-      usernamesList.innerHTML = '';
-      categories[category].forEach(username => {
-        const div = document.createElement('div');
-        div.className = 'username';
-        div.textContent = username;
-        usernamesList.appendChild(div);
-      });
-      usernamesList.classList.remove('fade-out');
-    }, 300);
-  }
+    function renderUsernames(category) {
+      usernamesList.classList.add('fade-out');
+      usernamesList.setAttribute('aria-labelledby', 'tab-' + category);
 
-  tabs.forEach(tab => {
-    tab.addEventListener('click', e => {
-      e.preventDefault();
+      setTimeout(() => {
+        usernamesList.innerHTML = '';
+        categories[category].forEach(username => {
+          const div = document.createElement('div');
+          div.className = 'username';
+          div.textContent = username;
+          usernamesList.appendChild(div);
+        });
+
+        usernamesList.classList.remove('fade-out');
+        usernamesList.classList.add('fade-in');
+
+        setTimeout(() => {
+          usernamesList.classList.remove('fade-in');
+        }, 350);
+      }, 350);
+    }
+
+    function selectTab(newTab) {
+      if (newTab.getAttribute('aria-selected') === 'true') return;
+
       playClick();
 
-      // Ripple effect
-      tab.classList.add('ripple');
-      setTimeout(() => tab.classList.remove('ripple'), 600);
-
-      if (tab.classList.contains('active')) return;
-
-      tabs.forEach(t => {
-        t.classList.remove('active');
-        t.setAttribute('aria-selected', 'false');
+      tabs.forEach(tab => {
+        tab.setAttribute('aria-selected', 'false');
+        tab.setAttribute('tabindex', '-1');
       });
 
-      tab.classList.add('active');
-      tab.setAttribute('aria-selected', 'true');
+      newTab.setAttribute('aria-selected', 'true');
+      newTab.setAttribute('tabindex', '0');
+      newTab.focus();
 
-      const category = tab.textContent.trim();
-      renderUsernames(category);
+      currentCategory = newTab.textContent.trim();
+      renderUsernames(currentCategory);
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', e => {
+        e.preventDefault();
+        selectTab(tab);
+      });
+
+      tab.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          let idx = [...tabs].indexOf(e.currentTarget);
+          if (e.key === 'ArrowRight') idx = (idx + 1) % tabs.length;
+          else idx = (idx - 1 + tabs.length) % tabs.length;
+          selectTab(tabs[idx]);
+        }
+        if (e.key === 'Home') {
+          e.preventDefault();
+          selectTab(tabs[0]);
+        }
+        if (e.key === 'End') {
+          e.preventDefault();
+          selectTab(tabs[tabs.length - 1]);
+        }
+      });
     });
-  });
 
-  const buyBtn = document.querySelector('.cta-button');
-  buyBtn.addEventListener('click', e => {
-    e.preventDefault();
-    playClick();
+    buyBtn.addEventListener('click', e => {
+      e.preventDefault();
+      playClick();
+      alert(`You clicked Buy Now on category: ${currentCategory}`);
+    });
 
-    buyBtn.classList.add('ripple');
-    setTimeout(() => buyBtn.classList.remove('ripple'), 700);
+    // Disable right-click globally
+    window.addEventListener('contextmenu', e => e.preventDefault());
 
-    alert("Buy button clicked!");
-  });
-
-  // Initial render
-  renderUsernames('3L');
-
-  // Disable right click everywhere
-  window.addEventListener('contextmenu', e => e.preventDefault());
-</script>
+    // Initial render
+    renderUsernames(currentCategory);
+  </script>
 </body>
 </html>
