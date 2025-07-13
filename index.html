@@ -73,16 +73,6 @@
       pointer-events: none;
     }
 
-    .max-price {
-      padding: 0.5rem 1rem;
-      border-radius: 999px;
-      border: none;
-      background: #1a1e25;
-      color: #fff;
-      font-size: 1rem;
-      width: 120px;
-    }
-
     nav {
       display: flex;
       overflow-x: auto;
@@ -258,6 +248,41 @@
       color: #fff;
     }
 
+    /* Rain effect styles */
+    .rain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    .rain-drop {
+      position: absolute;
+      width: 2px;
+      height: 16px;
+      background: linear-gradient(to bottom, transparent, #39d);
+      opacity: 0.4;
+      animation: rainFall linear infinite;
+    }
+
+    @keyframes rainFall {
+      0% {
+        transform: translateY(-100px) translateX(0) rotate(-15deg);
+        opacity: 0;
+      }
+      50% {
+        opacity: 0.4;
+      }
+      100% {
+        transform: translateY(100vh) translateX(50px) rotate(-15deg);
+        opacity: 0;
+      }
+    }
+
     @media (max-width: 720px) {
       header {
         font-size: 2.2rem;
@@ -279,6 +304,8 @@
   </style>
 </head>
 <body>
+
+<div class="rain" id="rain-container"></div>
 
 <header>
   <div class="main-header-container">
@@ -302,7 +329,6 @@
           <input type="text" id="searchInput" placeholder="Search...">
           <svg viewBox="0 0 24 24"><path d="M10,2A8,8 0 0,1 18,10C18,12.21 17.21,14.21 15.9,15.63L21.71,21.46L20.29,22.88L14.46,17.05C13.03,18.36 11.03,19.14 9,19.14A8,8 0 0,1 10,2M10,4A6,6 0 0,0 4,10C4,13.31 6.69,16 10,16A6,6 0 0,0 16,10C16,6.69 13.31,4 10,4Z" /></svg>
         </div>
-        <input type="number" id="maxPriceInput" class="max-price" placeholder="Max Price">
       </div>
     </div>
   </div>
@@ -310,7 +336,6 @@
   <section class="username-list" id="username-container"></section>
 </main>
 
-<!-- Notification -->
 <div id="notification-overlay">
   <div id="notification-box">
     <button id="notification-close" aria-label="Close notification">&times;</button>
@@ -322,19 +347,36 @@
 
 <script>
   const usernames = {
-    "3l": [ {name: "vjd", price: 79} ],
-    "3c": [ {name: "2to", price: 70} ], 
-    "3n": [ {name: "123", price: 50} ],
-    "4l": [ {name: "iurq", price: 120}, {name: "hnhl", price: 110}, {name: "qgaq", price: 115}, {name: "dunw", price: 108}, {name: "iepz", price: 110}, {name: "gsig", price: 110}, {name: "ojxb", price: 110}, {name: "hqsq", price: 110}, {name: "ydex", price: 110}, {name: "vpto", price: 110}, {name: "uqzq", price: 110} ],
-    "4n": [ {name: "1831", price: 60} ]
+    "3l": [ {name: "vjd", price: 0} ],
+    "3c": [ {name: "2to", price: 0} ], 
+    "3n": [ {name: "123", price: 0} ],
+    "4l": [ 
+      {name: "iurq", price: 4.29}, 
+      {name: "hnhl", price: 4.89}, 
+      {name: "qgaq", price: 4.89}, 
+      {name: "dunw", price: 4.69}, 
+      {name: "iepz", price: 3.59}, 
+      {name: "gsig", price: 3.79}, 
+      {name: "ojxb", price: 4.29}, 
+      {name: "hqsq", price: 4.89}, 
+      {name: "ydex", price: 3.59}, 
+      {name: "vpto", price: 3.59},
+      {name: "uqzq", price: 0} // Username not listed in prompt, set to 0
+    ],
+    "4n": [ 
+      {name: "1831", price: 28.49}
+    ],
+    "4c": [
+      // Placeholder for 4c, assuming no listed prices, set to 0 for any if they existed in the original data.
+    ]
   };
 
   const container = document.getElementById('username-container');
   const navButtons = document.querySelectorAll('nav button');
   const overlay = document.getElementById('notification-overlay');
   const closeBtn = document.getElementById('notification-close');
-  const maxPriceInput = document.getElementById('maxPriceInput');
   const searchInput = document.getElementById('searchInput');
+  const rainContainer = document.getElementById('rain-container');
 
   let currentCategory = "3l";
 
@@ -342,17 +384,18 @@
     container.innerHTML = '';
     if (!usernames[category]) return;
 
-    const maxPrice = parseFloat(maxPriceInput.value);
     const searchText = searchInput.value.trim().toLowerCase();
 
+    // Filter usernames based on whether the name *starts* with the search text.
+    // This ensures "d" only matches "dunw" and not "hjde".
     usernames[category]
-      .filter(u => (!maxPrice || u.price <= maxPrice) && (!searchText || u.name.toLowerCase().includes(searchText)))
+      .filter(u => !searchText || u.name.toLowerCase().startsWith(searchText))
       .forEach(u => {
         const card = document.createElement('div');
         card.className = 'username-card';
         card.innerHTML = `
           <span>${u.name}</span>
-          <div class="price">$${u.price}</div>
+          <div class="price">$${u.price.toFixed(2)}</div>
           <button class="btn-buy">Buy</button>
         `;
         card.querySelector('.btn-buy').addEventListener('click', () => showNotification());
@@ -362,7 +405,7 @@
 
   function showNotification() {
     overlay.classList.add('show');
-    overlay.focus();
+    // We don't focus the overlay directly as it's a container; let's ensure screen readers can interact if needed, but for visual notification, adding the class is enough.
   }
 
   function hideNotification() {
@@ -374,7 +417,7 @@
     if (e.target === overlay) hideNotification();
   });
   window.addEventListener('keydown', e => {
-    if (e.key === "Escape") hideNotification();
+    if (e.key === "Escape" && overlay.classList.contains('show')) hideNotification();
   });
 
   navButtons.forEach(btn => {
@@ -386,9 +429,31 @@
     });
   });
 
-  maxPriceInput.addEventListener('input', () => renderUsernames(currentCategory));
   searchInput.addEventListener('input', () => renderUsernames(currentCategory));
 
+  // Rain effect generation
+  function createRain() {
+    const totalDrops = 80;
+    const viewportWidth = window.innerWidth;
+    
+    for (let i = 0; i < totalDrops; i++) {
+      const drop = document.createElement('div');
+      drop.className = 'rain-drop';
+      
+      const startX = Math.random() * viewportWidth;
+      const animationDuration = 1.5 + Math.random() * 1.5;
+      const delay = Math.random() * 5;
+      
+      drop.style.left = `${startX}px`;
+      drop.style.animationDuration = `${animationDuration}s`;
+      drop.style.animationDelay = `${delay}s`;
+      
+      rainContainer.appendChild(drop);
+    }
+  }
+
+  // Initial setup
+  createRain();
   renderUsernames(currentCategory);
 </script>
 
