@@ -1,382 +1,272 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>claimuser.xyz</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
-
-    /* Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Username Store | Buy 3l 3c 3n 4l 4c 4n Usernames</title>
+<style>
+  body {
+    margin:0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #121212; color: #eee;
+    display: flex; flex-direction: column; min-height: 100vh;
+  }
+  header {
+    background: #222; padding: 1rem 2rem;
+    font-size: 1.5rem; font-weight: bold; text-align: center;
+  }
+  nav {
+    display: flex; justify-content: center; background: #1f1f1f;
+  }
+  nav button {
+    background: none; border: none; color: #ccc; font-size: 1rem; padding: 0.8rem 1.5rem;
+    cursor: pointer; transition: color 0.2s, border-bottom 0.3s;
+    border-bottom: 3px solid transparent;
+  }
+  nav button.active, nav button:hover {
+    color: #39d;
+    border-bottom: 3px solid #39d;
+  }
+  main {
+    flex: 1; padding: 1rem 2rem; max-width: 900px; margin: 0 auto;
+  }
+  .username-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
+    gap: 1rem;
+  }
+  .username-card {
+    background: #1e1e1e; border-radius: 8px;
+    padding: 1rem; box-shadow: 0 0 10px rgba(57, 157, 255, 0.3);
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .username-card span {
+    font-weight: bold; font-size: 1.2rem; letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+  .price {
+    color: #39d; font-weight: 600; margin-bottom: 0.8rem;
+  }
+  .btn-buy {
+    background: #39d; border: none; padding: 0.5rem;
+    border-radius: 4px; color: white; cursor: pointer;
+    font-weight: 600; transition: background 0.3s;
+  }
+  .btn-buy:hover {
+    background: #2672c7;
+  }
+  #cart {
+    background: #222; padding: 1rem 2rem;
+    border-top: 1px solid #444;
+  }
+  #cart h2 {
+    margin-top: 0; margin-bottom: 0.5rem;
+  }
+  #cart-items {
+    list-style: none; padding: 0; margin: 0 0 1rem 0;
+    max-height: 120px; overflow-y: auto;
+  }
+  #cart-items li {
+    display: flex; justify-content: space-between;
+    padding: 0.3rem 0; border-bottom: 1px solid #333;
+  }
+  #cart-total {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: #39d;
+  }
+  #checkout-btn {
+    background: #0a84ff;
+    border: none;
+    padding: 0.7rem 1.2rem;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-size: 1.1rem;
+    width: 100%;
+    max-width: 200px;
+    margin-left: auto;
+    display: block;
+    transition: background 0.3s;
+  }
+  #checkout-btn:hover {
+    background: #0066cc;
+  }
+  @media (max-width: 600px) {
+    nav {
+      flex-wrap: wrap;
     }
-    html, body {
-      height: 100%;
-      background: #121212;
-      font-family: 'Inter', sans-serif;
-      color: #eee;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      overflow-x: hidden;
+    nav button {
+      flex: 1 1 33%;
+      font-size: 0.9rem;
+      padding: 0.6rem 0.5rem;
     }
-
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 2rem;
-      position: relative;
-      min-height: 100vh;
-      user-select: none;
-    }
-
-    /* --- Snow Container --- */
-    #snow-container {
-      pointer-events: none; /* don’t block clicks */
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      z-index: 0;
-      overflow: hidden;
-      background: transparent;
-      mix-blend-mode: screen;
-    }
-
-    /* Container */
-    .container {
-      background: rgba(255 255 255 / 0.07);
-      border-radius: 1rem;
-      box-shadow:
-        0 4px 30px rgba(0,0,0,0.9),
-        inset 0 0 50px rgba(255 255 255 / 0.05);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      width: 420px;
-      max-width: 100%;
-      padding: 2rem 2.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      position: relative;
-      z-index: 10;
-      opacity: 0;
-      transition: opacity 1s ease 0.5s;
-    }
-
-    /* Show container after load */
-    .container.visible {
-      opacity: 1;
-    }
-
-    header h1 {
-      font-size: 2.4rem;
-      font-weight: 700;
-      text-shadow: 0 0 8px #64d2ffaa, 0 0 20px #3bc1ff88;
-      letter-spacing: 0.06em;
-      color: #e0f7ff;
-    }
-
-    header p {
-      color: #a3b8c2cc;
-      font-weight: 400;
-      font-size: 1rem;
-      text-shadow: 0 0 4px rgba(0,0,0,0.7);
-    }
-
-    nav[role="tablist"] {
-      display: flex;
-      gap: 1rem;
-    }
-
-    nav button[role="tab"] {
-      background: rgba(255 255 255 / 0.08);
-      border: none;
-      border-radius: 0.8rem;
-      padding: 0.65rem 1.4rem;
-      font-size: 1rem;
-      font-weight: 600;
-      color: #d2e9ffcc;
-      cursor: pointer;
-      box-shadow:
-        0 2px 8px rgba(0,0,0,0.6),
-        inset 0 -1px 1px rgba(255 255 255 / 0.3);
-      transition:
-        background 0.3s ease,
-        color 0.3s ease,
-        box-shadow 0.3s ease,
-        text-shadow 0.3s ease,
-        transform 0.2s ease;
-      text-shadow: 0 0 3px transparent;
-      backdrop-filter: blur(12px);
-      user-select: none;
-    }
-
-    /* Hover + focus highlight for tabs */
-    nav button[role="tab"]:hover,
-    nav button[role="tab"]:focus-visible {
-      background: rgba(100 210 255 / 0.5);
-      color: #fff;
-      text-shadow: 0 0 10px #64d2ffdd, 0 0 20px #3bc1ffcc;
-      box-shadow:
-        0 0 20px #3bc1ffcc,
-        0 0 30px #64d2ffdd,
-        inset 0 0 10px #64d2ffcc;
-      transform: scale(1.05);
-      outline: none;
-    }
-
-    nav button[role="tab"][aria-selected="true"] {
-      background: rgba(100 210 255 / 0.6);
-      color: #fff;
-      text-shadow: 0 0 8px #64d2ffdd, 0 0 15px #3bc1ffcc;
-      box-shadow:
-        0 0 18px #3bc1ffcc,
-        0 0 25px #64d2ffdd,
-        inset 0 0 8px #64d2ffcc;
-      cursor: default;
-      transform: scale(1.07);
-    }
-
-    #usernames-list {
-      background: rgba(255 255 255 / 0.06);
-      border-radius: 1rem;
-      padding: 1rem 1.5rem;
-      max-height: 190px;
-      overflow-y: auto;
-      box-shadow:
-        0 8px 24px rgba(0,0,0,0.75),
-        inset 0 0 18px rgba(255 255 255 / 0.1);
-      backdrop-filter: blur(15px);
-      transition: opacity 0.35s ease;
-      color: #d2e9ffdd;
-      font-weight: 600;
-      text-shadow: 0 0 4px rgba(0,0,0,0.5);
-      user-select: none;
-    }
-
-    #usernames-list.fade-out {
-      opacity: 0;
-    }
-    #usernames-list.fade-in {
-      opacity: 1;
-    }
-
-    .username {
-      padding: 0.3rem 0.4rem;
-      margin-bottom: 0.4rem;
-      border-radius: 0.4rem;
-      cursor: pointer;
-      user-select: none;
-      transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.25s ease;
-      box-shadow: 0 0 4px rgba(0,0,0,0.4);
-      color: #d2e9ffcc;
-      text-shadow: 0 0 3px rgba(0,0,0,0.8);
-    }
-    .username:hover, .username:focus-visible {
-      background: rgba(100 210 255 / 0.5);
-      box-shadow:
-        0 0 15px #3bc1ffaa,
-        0 0 22px #64d2ffcc;
-      color: #ffffffee;
-      outline: none;
-      transform: scale(1.05);
-    }
-
-    .cta-button {
-      background: rgba(100 210 255 / 0.7);
-      color: #f0f9ff;
-      font-weight: 700;
-      border: none;
-      border-radius: 1.2rem;
-      padding: 1rem 0;
-      font-size: 1.3rem;
-      box-shadow:
-        0 6px 15px #3bc1ffbb,
-        inset 0 0 15px #64d2ffcc;
-      cursor: pointer;
-      user-select: none;
-      transition:
-        background 0.4s ease,
-        box-shadow 0.3s ease,
-        transform 0.2s ease;
-      text-shadow: 0 0 12px #64d2ffee;
-      backdrop-filter: blur(12px);
-    }
-
-    .cta-button:hover, .cta-button:focus-visible {
-      background: #42b6ff;
-      box-shadow:
-        0 8px 24px #42b6ffcc,
-        inset 0 0 20px #3bc1ffdd;
-      transform: scale(1.07);
-      outline: none;
-    }
-
-    footer {
-      text-align: center;
-      color: #555f6acc;
-      font-size: 0.85rem;
-      font-weight: 400;
-      user-select: none;
-      margin-top: 1rem;
-      text-shadow: 0 0 2px rgba(0,0,0,0.6);
-    }
-
-    /* Scrollbar styling for usernames */
-    #usernames-list::-webkit-scrollbar {
-      width: 8px;
-    }
-    #usernames-list::-webkit-scrollbar-thumb {
-      background: rgba(100 210 255 / 0.5);
-      border-radius: 10px;
-      box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-    }
-    #usernames-list::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    /* --- Snowflake styles --- */
-    .snowflake {
-      position: fixed;
-      top: -10px;
-      pointer-events: none;
-      user-select: none;
-      color: white;
-      font-size: 12px;
-      opacity: 0.8;
-      filter: drop-shadow(0 0 2px rgba(255 255 255 / 0.6));
-      animation-name: fall, sway;
-      animation-timing-function: linear, ease-in-out;
-      animation-iteration-count: infinite, infinite;
-      animation-direction: normal, alternate;
-      will-change: transform;
-    }
-
-    @keyframes fall {
-      0% {
-        transform: translateY(-15px);
-        opacity: 0.8;
-      }
-      90% {
-        opacity: 0.8;
-      }
-      100% {
-        transform: translateY(100vh);
-        opacity: 0;
-      }
-    }
-
-    @keyframes sway {
-      0% {
-        transform: translateX(0);
-      }
-      100% {
-        transform: translateX(20px);
-      }
-    }
-
-    /* Preloader overlay */
-    #preloader {
-      position: fixed;
-      inset: 0;
-      background: #121212;
-      z-index: 9999;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      pointer-events: none;
-    }
-
-  </style>
+  }
+</style>
 </head>
 <body>
 
-  <div id="preloader" aria-hidden="true"></div>
+<header>Buy Your Dream Username</header>
 
-  <div id="snow-container" aria-hidden="true"></div>
+<nav aria-label="Username categories">
+  <button class="active" data-category="3l">3 Letters (3l)</button>
+  <button data-category="3c">3 Characters (3c)</button>
+  <button data-category="3n">3 Numbers (3n)</button>
+  <button data-category="4l">4 Letters (4l)</button>
+  <button data-category="4c">4 Characters (4c)</button>
+  <button data-category="4n">4 Numbers (4n)</button>
+</nav>
 
-  <div class="container" role="main" aria-label="Username Claim Website" tabindex="0">
-    <header>
-      <h1>claimuser.xyz</h1>
-      <p>Free username claims with our simple tool</p>
-    </header>
-
-    <nav role="tablist" aria-label="Claim method selection">
-      <button role="tab" aria-selected="true" id="tab-name" aria-controls="panel-name" tabindex="0">By name</button>
-      <button role="tab" aria-selected="false" id="tab-username" aria-controls="panel-username" tabindex="-1">By username</button>
-    </nav>
-
-    <section id="usernames-list" tabindex="0" aria-live="polite" aria-relevant="additions"></section>
-
-    <button class="cta-button" type="button" aria-label="Start claiming username">Start Claim</button>
-
-    <footer>
-      &copy; 2025 claimuser.xyz
-    </footer>
+<main>
+  <div id="username-container" class="username-list" aria-live="polite" aria-atomic="true">
+    <!-- usernames will load here -->
   </div>
+</main>
 
-  <script>
-    const snowContainer = document.getElementById('snow-container');
-    const preloader = document.getElementById('preloader');
-    const container = document.querySelector('.container');
+<section id="cart" aria-label="Shopping cart">
+  <h2>Cart</h2>
+  <ul id="cart-items" aria-live="polite"></ul>
+  <div id="cart-total">Total: $0</div>
+  <button id="checkout-btn" disabled>Checkout</button>
+</section>
 
-    // Configuration for snow
-    const snowflakeCount = 80;
-    const snowflakes = [];
+<script>
+  // Sample usernames for each category with prices
+  const usernames = {
+    "3l": [
+      {name: "abc", price: 99},
+      {name: "xyz", price: 120},
+      {name: "jkl", price: 110},
+      {name: "mno", price: 105},
+      {name: "qrs", price: 100},
+    ],
+    "3c": [
+      {name: "a1b", price: 85},
+      {name: "9x7", price: 75},
+      {name: "c3d", price: 90},
+      {name: "r5t", price: 80},
+      {name: "z2m", price: 95},
+    ],
+    "3n": [
+      {name: "123", price: 60},
+      {name: "777", price: 150},
+      {name: "369", price: 70},
+      {name: "420", price: 65},
+      {name: "999", price: 200},
+    ],
+    "4l": [
+      {name: "abcd", price: 140},
+      {name: "wxyz", price: 180},
+      {name: "mnop", price: 160},
+      {name: "qrst", price: 150},
+      {name: "uvwx", price: 155},
+    ],
+    "4c": [
+      {name: "a1b2", price: 130},
+      {name: "9x7m", price: 110},
+      {name: "c3d4", price: 125},
+      {name: "r5t6", price: 115},
+      {name: "z2m9", price: 120},
+    ],
+    "4n": [
+      {name: "1234", price: 90},
+      {name: "7777", price: 220},
+      {name: "3690", price: 95},
+      {name: "4200", price: 100},
+      {name: "9999", price: 250},
+    ],
+  };
 
-    // Create snowflake elements
-    function createSnowflake(index) {
-      const span = document.createElement('span');
-      span.classList.add('snowflake');
-      span.textContent = '❄'; // snowflake character
+  const categoryButtons = document.querySelectorAll('nav button');
+  const usernameContainer = document.getElementById('username-container');
+  const cartItemsList = document.getElementById('cart-items');
+  const cartTotalEl = document.getElementById('cart-total');
+  const checkoutBtn = document.getElementById('checkout-btn');
 
-      // Random initial horizontal position
-      span.style.left = Math.random() * 100 + 'vw';
+  let currentCategory = '3l';
+  let cart = [];
 
-      // Random size 8-14px font size
-      const size = 8 + Math.random() * 6;
-      span.style.fontSize = size + 'px';
-
-      // Random animation duration for fall: 8-20 seconds
-      const fallDuration = 8000 + Math.random() * 12000;
-      span.style.animationDuration = `${fallDuration}ms, ${3000 + Math.random() * 4000}ms`;
-
-      // Random animation delay so they don't start together
-      const delay = Math.random() * fallDuration;
-      span.style.animationDelay = `${delay}ms, ${delay}ms`;
-
-      // Slight opacity variance
-      span.style.opacity = 0.6 + Math.random() * 0.4;
-
-      // Z index so snow is behind container but above background
-      span.style.zIndex = '1';
-
-      snowContainer.appendChild(span);
-      snowflakes.push(span);
+  // Load usernames for a category
+  function loadUsernames(category) {
+    usernameContainer.innerHTML = '';
+    const list = usernames[category] || [];
+    if(list.length === 0) {
+      usernameContainer.innerHTML = '<p>No usernames available.</p>';
+      return;
     }
-
-    // Generate snowflakes for preload and page
-    for(let i = 0; i < snowflakeCount; i++) {
-      createSnowflake(i);
-    }
-
-    // When page loaded, fade out preloader and show container
-    window.addEventListener('load', () => {
-      // Fade out preloader smoothly
-      preloader.style.transition = 'opacity 1s ease';
-      preloader.style.opacity = '0';
-      setTimeout(() => {
-        preloader.style.display = 'none';
-        // Show main container
-        container.classList.add('visible');
-      }, 1100);
+    list.forEach(u => {
+      const card = document.createElement('div');
+      card.className = 'username-card';
+      card.innerHTML = `
+        <span>${u.name}</span>
+        <div class="price">$${u.price}</div>
+        <button class="btn-buy" aria-label="Buy username ${u.name} for $${u.price}">Buy</button>
+      `;
+      card.querySelector('.btn-buy').addEventListener('click', () => addToCart(u));
+      usernameContainer.appendChild(card);
     });
+  }
 
-    // Accessibility: keyboard focus visible for usernames and tabs
-    // (Handled by :focus-visible in CSS)
+  // Add username to cart
+  function addToCart(item) {
+    if(cart.find(i => i.name === item.name)) {
+      alert("This username is already in your cart.");
+      return;
+    }
+    cart.push(item);
+    renderCart();
+  }
 
-  </script>
+  // Remove username from cart
+  function removeFromCart(name) {
+    cart = cart.filter(i => i.name !== name);
+    renderCart();
+  }
+
+  // Render cart UI
+  function renderCart() {
+    cartItemsList.innerHTML = '';
+    if(cart.length === 0) {
+      cartItemsList.innerHTML = '<li>Your cart is empty.</li>';
+      checkoutBtn.disabled = true;
+      cartTotalEl.textContent = "Total: $0";
+      return;
+    }
+    cart.forEach(i => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <span>${i.name}</span> <button aria-label="Remove ${i.name} from cart" data-name="${i.name}">✖</button>
+      `;
+      li.querySelector('button').addEventListener('click', () => removeFromCart(i.name));
+      cartItemsList.appendChild(li);
+    });
+    const total = cart.reduce((sum, i) => sum + i.price, 0);
+    cartTotalEl.textContent = `Total: $${total}`;
+    checkoutBtn.disabled = false;
+  }
+
+  // Category tab click
+  categoryButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      categoryButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentCategory = btn.dataset.category;
+      loadUsernames(currentCategory);
+    });
+  });
+
+  // Checkout button click
+  checkoutBtn.addEventListener('click', () => {
+    if(cart.length === 0) return;
+    alert("Thank you for your purchase! (This is a demo alert. Implement payment integration to complete.)");
+    cart = [];
+    renderCart();
+  });
+
+  // Initialize page
+  loadUsernames(currentCategory);
+  renderCart();
+</script>
+
 </body>
 </html>
