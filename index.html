@@ -4,25 +4,51 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Username Store | Buy 3l 3c 3n 4l 4c 4n Usernames</title>
+
+  <!-- Use Poppins font for smoothness -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
   <style>
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
+    }
     body {
-      margin:0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #121212; color: #eee;
-      display: flex; flex-direction: column; min-height: 100vh;
+      margin:0; 
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+        Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background: #121212; 
+      color: #eee;
+      display: flex; 
+      flex-direction: column; 
+      min-height: 100vh;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
     header {
-      background: #222; padding: 1rem 2rem;
-      font-size: 1.5rem; font-weight: bold; text-align: center;
+      background: #222; 
+      padding: 1.2rem 2rem;
+      font-size: 1.75rem; 
+      font-weight: 600; 
+      text-align: center;
       user-select: none;
       -webkit-user-select: none;
       -moz-user-select: none;
       -ms-user-select: none;
+      text-shadow: 0 0 8px rgba(57, 157, 255, 0.7);
+      letter-spacing: 0.05em;
     }
     nav {
-      display: flex; justify-content: center; background: #1f1f1f;
+      display: flex; 
+      justify-content: flex-start; 
+      background: #1f1f1f;
       overflow-x: auto;
       scrollbar-width: thin;
       scrollbar-color: #39d transparent;
+      padding: 0 1rem;
+      gap: 0.75rem;
+      user-select: none;
     }
     nav::-webkit-scrollbar {
       height: 6px;
@@ -32,237 +58,291 @@
       border-radius: 3px;
     }
     nav button {
-      background: none; border: none; color: #ccc; font-size: 1rem; padding: 0.8rem 2rem;
-      cursor: pointer; transition: color 0.2s, border-bottom 0.3s, filter 0.3s;
+      background: none; 
+      border: none; 
+      color: #aaa; 
+      font-size: 1rem; 
+      padding: 0.9rem 2rem;
+      cursor: pointer; 
+      transition: color 0.3s ease, border-bottom 0.35s ease, filter 0.3s ease;
       border-bottom: 3px solid transparent;
       white-space: nowrap;
+      font-weight: 500;
+      border-radius: 6px 6px 0 0;
       user-select: none;
       -webkit-user-select: none;
+      box-shadow: inset 0 -3px 0 transparent;
+      text-shadow: 0 0 3px rgba(0,0,0,0.4);
     }
     nav button.active, nav button:hover {
       color: #39d;
-      border-bottom: 3px solid #39d;
-      filter: brightness(1.3);
+      border-bottom-color: #39d;
+      filter: brightness(1.25);
+      box-shadow: inset 0 -3px 6px #39d;
+      text-shadow: 0 0 8px rgba(57, 157, 255, 0.9);
     }
     main {
-      flex: 1; padding: 1rem 2rem; max-width: 900px; margin: 0 auto;
+      flex: 1; 
+      padding: 2rem 3rem; 
+      max-width: 960px; 
+      margin: 0 auto;
       user-select: none;
-      -webkit-user-select: none;
     }
     .username-list {
       display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
-      gap: 1rem;
-    }
-    .username-card {
-      background: rgba(30,30,30,0.8); border-radius: 8px;
-      padding: 1rem; box-shadow: 0 0 15px rgba(57, 157, 255, 0.4);
-      display: flex; flex-direction: column; justify-content: space-between;
-      user-select: none;
-      -webkit-user-select: none;
-      position: relative;
-      overflow: hidden;
-      backdrop-filter: blur(8px);
-      border: 1px solid #333;
-      transition: box-shadow 0.3s ease;
-    }
-    .username-card:hover {
-      box-shadow: 0 0 25px rgba(57, 157, 255, 0.8);
-    }
-    .username-card span {
-      font-weight: bold; font-size: 1.2rem; letter-spacing: 0.05em;
-      margin-bottom: 0.5rem;
-      text-shadow: 0 0 5px rgba(0,0,0,0.8);
-    }
-    .price {
-      color: #39d; font-weight: 600; margin-bottom: 0.8rem;
-      user-select: text;
-    }
-    .btn-buy {
-      background: #39d; border: none; padding: 0.5rem;
-      border-radius: 4px; color: white; cursor: pointer;
-      font-weight: 600; transition: background 0.3s, filter 0.3s;
-      user-select: none;
-      -webkit-user-select: none;
-    }
-    .btn-buy:hover {
-      background: #2672c7;
-      filter: brightness(1.1);
-    }
-
-    /* Custom Notification Overlay */
-    #notification-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.75);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-      z-index: 9999;
-      user-select: none;
-      -webkit-user-select: none;
-    }
-    #notification-overlay.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    #notification-box {
-      background: rgba(20, 20, 20, 0.95);
-      border-radius: 10px;
-      padding: 2rem 3rem;
-      max-width: 320px;
-      text-align: center;
-      box-shadow: 0 0 30px #39d;
-      color: #eee;
-      user-select: none;
-      -webkit-user-select: none;
-      backdrop-filter: blur(10px);
-      position: relative;
-    }
-    #notification-box h2 {
-      margin-top: 0; margin-bottom: 1rem;
-      font-weight: 700;
-      font-size: 1.4rem;
-      color: #39d;
-      text-shadow: 0 0 6px #39d;
-    }
-    #notification-box p {
-      margin-bottom: 1.8rem;
-      font-size: 1.1rem;
-      line-height: 1.4;
-    }
-    #notification-box a {
-      display: inline-block;
-      background: #39d;
-      color: white;
-      padding: 0.6rem 1.6rem;
-      border-radius: 5px;
-      font-weight: 600;
-      text-decoration: none;
-      box-shadow: 0 0 12px #39d;
-      transition: background 0.3s ease;
-      user-select: none;
-      -webkit-user-select: none;
-    }
-    #notification-box a:hover {
-      background: #2672c7;
-      box-shadow: 0 0 18px #2672c7;
-    }
-    #notification-close {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      color: #39d;
-      font-weight: bold;
-      font-size: 1.3rem;
-      cursor: pointer;
-      user-select: none;
-      -webkit-user-select: none;
-      transition: color 0.2s ease;
-    }
-    #notification-close:hover {
-      color: #2672c7;
-    }
-
-    /* Disable text selection globally except on discord link */
-    * {
-      user-select: none;
-      -webkit-user-select: none;
-    }
-    a {
-      user-select: text !important;
-      -webkit-user-select: text !important;
-    }
-
-    /* Scrollbar for username container if needed */
-    .username-list {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      grid-auto-flow: row;
+      gap: 1.4rem 2rem; /* row-gap and column-gap */
+      max-height: 70vh;
+      overflow-y: auto;
       scrollbar-width: thin;
       scrollbar-color: #39d transparent;
-      max-height: 65vh;
-      overflow-y: auto;
+      padding-right: 0.5rem;
     }
     .username-list::-webkit-scrollbar {
       width: 8px;
     }
     .username-list::-webkit-scrollbar-thumb {
       background: #39d;
-      border-radius: 4px;
+      border-radius: 5px;
+    }
+    .username-card {
+      background: rgba(25, 25, 25, 0.85);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 0 18px rgba(57, 157, 255, 0.35);
+      display: flex; 
+      flex-direction: column; 
+      justify-content: space-between;
+      user-select: none;
+      -webkit-user-select: none;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      border: 1.8px solid rgba(57, 157, 255, 0.3);
+      transition: box-shadow 0.4s ease, transform 0.3s ease;
+      cursor: default;
+    }
+    .username-card:hover {
+      box-shadow: 0 0 40px rgba(57, 157, 255, 0.75);
+      transform: translateY(-5px);
+    }
+    .username-card span {
+      font-weight: 600; 
+      font-size: 1.3rem; 
+      letter-spacing: 0.07em;
+      margin-bottom: 0.6rem;
+      color: #e0e6f2;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.85);
+    }
+    .price {
+      color: #39d; 
+      font-weight: 600; 
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      user-select: text;
+      letter-spacing: 0.05em;
+      text-shadow: 0 0 7px rgba(57, 157, 255, 0.7);
+    }
+    .btn-buy {
+      background: #39d; 
+      border: none; 
+      padding: 0.55rem 0;
+      border-radius: 8px; 
+      color: white; 
+      cursor: pointer;
+      font-weight: 600; 
+      transition: background 0.4s ease, filter 0.35s ease;
+      user-select: none;
+      -webkit-user-select: none;
+      box-shadow: 0 0 12px #39d;
+      font-size: 1.05rem;
+      letter-spacing: 0.04em;
+      text-shadow: 0 0 6px rgba(0,0,0,0.7);
+    }
+    .btn-buy:hover {
+      background: #2672c7;
+      filter: brightness(1.12);
+      box-shadow: 0 0 18px #2672c7;
     }
 
-    @media (max-width: 600px) {
-      nav {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        scrollbar-width: thin;
-        scrollbar-color: #39d transparent;
-      }
+    /* Custom Notification Overlay */
+    #notification-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.80);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+      z-index: 9999;
+      user-select: none;
+      -webkit-user-select: none;
+      backdrop-filter: blur(8px);
+    }
+    #notification-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #notification-box {
+      background: rgba(25, 25, 25, 0.97);
+      border-radius: 14px;
+      padding: 2rem 3.2rem;
+      max-width: 340px;
+      text-align: center;
+      box-shadow: 0 0 45px #39d;
+      color: #eee;
+      user-select: none;
+      -webkit-user-select: none;
+      backdrop-filter: blur(10px);
+      position: relative;
+      font-weight: 600;
+      font-size: 1.15rem;
+      letter-spacing: 0.03em;
+    }
+    #notification-box h2 {
+      margin-top: 0; margin-bottom: 1.3rem;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #39d;
+      text-shadow: 0 0 12px #39d;
+      user-select: text;
+    }
+    #notification-box p {
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      line-height: 1.4;
+      user-select: text;
+    }
+    #notification-box a {
+      display: inline-block;
+      background: #39d;
+      color: white;
+      padding: 0.7rem 2rem;
+      border-radius: 8px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 0 18px #39d;
+      transition: background 0.4s ease;
+      user-select: text;
+      font-size: 1.1rem;
+      letter-spacing: 0.05em;
+    }
+    #notification-box a:hover {
+      background: #2672c7;
+      box-shadow: 0 0 28px #2672c7;
+    }
+    #notification-close {
+      position: absolute;
+      top: 14px; right: 14px;
+      background: none;
+      border: none;
+      color: #999;
+      font-size: 1.6rem;
+      cursor: pointer;
+      font-weight: 700;
+      transition: color 0.3s ease;
+      user-select: none;
+    }
+    #notification-close:hover {
+      color: #39d;
+    }
+
+    /* Scrollbar styles for main content if needed */
+    main::-webkit-scrollbar {
+      width: 6px;
+    }
+    main::-webkit-scrollbar-thumb {
+      background: #39d;
+      border-radius: 3px;
+    }
+
+    /* Responsive */
+    @media (max-width: 720px) {
       nav button {
-        flex: 0 0 auto;
+        padding: 0.7rem 1.25rem;
         font-size: 0.9rem;
-        padding: 0.6rem 1.2rem;
+      }
+      main {
+        padding: 1.5rem 1rem;
+        max-width: 100%;
+      }
+      .username-card {
+        padding: 1rem 1.25rem;
+      }
+      .btn-buy {
+        font-size: 1rem;
+        padding: 0.5rem 0;
       }
     }
   </style>
 </head>
 <body>
+  <header>Username Store</header>
+  <nav role="tablist" aria-label="Username categories">
+    <button class="active" role="tab" aria-selected="true" data-category="3l" tabindex="0">3L Usernames</button>
+    <button role="tab" aria-selected="false" data-category="3c" tabindex="-1">3C Usernames</button>
+    <button role="tab" aria-selected="false" data-category="3n" tabindex="-1">3N Usernames</button>
+    <button role="tab" aria-selected="false" data-category="4l" tabindex="-1">4L Usernames</button>
+    <button role="tab" aria-selected="false" data-category="4c" tabindex="-1">4C Usernames</button>
+    <button role="tab" aria-selected="false" data-category="4n" tabindex="-1">4N Usernames</button>
+  </nav>
+  <main>
+    <section class="username-list" id="username-container" tabindex="0" aria-live="polite" aria-relevant="additions"></section>
+  </main>
 
-<header>Buy Your Dream Username</header>
-
-<nav aria-label="Username categories">
-  <button class="active" data-category="3l">3 Letters (3l)</button>
-  <button data-category="3c">3 Characters (3c)</button>
-  <button data-category="3n">3 Numbers (3n)</button>
-  <button data-category="4l">4 Letters (4l)</button>
-  <button data-category="4c">4 Characters (4c)</button>
-  <button data-category="4n">4 Numbers (4n)</button>
-</nav>
-
-<main>
-  <div id="username-container" class="username-list" aria-live="polite" aria-atomic="true">
-    <!-- usernames will load here -->
+  <!-- Notification overlay -->
+  <div id="notification-overlay" role="dialog" aria-modal="true" aria-labelledby="notification-title" tabindex="-1">
+    <div id="notification-box">
+      <button id="notification-close" aria-label="Close notification">&times;</button>
+      <h2 id="notification-title">Buy Usernames on Our Discord</h2>
+      <p>Please join our Discord server to purchase usernames.</p>
+      <a href="https://discord.gg/claimuser" target="_blank" rel="noopener noreferrer">Join Discord</a>
+    </div>
   </div>
-</main>
-
-<!-- Notification overlay -->
-<div id="notification-overlay" role="alertdialog" aria-modal="true" aria-labelledby="notification-title" aria-describedby="notification-desc">
-  <div id="notification-box">
-    <div id="notification-close" role="button" aria-label="Close notification">&times;</div>
-    <h2 id="notification-title">Buy Usernames on Our Discord</h2>
-    <p id="notification-desc">To purchase usernames, please join our Discord server and contact us there.</p>
-    <a href="https://discord.gg/claimuser" target="_blank" rel="noopener noreferrer">Join Discord</a>
-  </div>
-</div>
 
 <script>
+  // Username data
   const usernames = {
     "3l": [
-      {name: "abc", price: 99},
-      {name: "xyz", price: 79},
+      {name: "abc", price: 79},
       {name: "cat", price: 89},
-      {name: "dog", price: 75}
+      {name: "dog", price: 75},
+      {name: "fox", price: 65},
+      {name: "sky", price: 60},
+      {name: "zen", price: 70}
     ],
     "3c": [
       {name: "x9z", price: 70},
-      {name: "m4n", price: 65}
+      {name: "m4n", price: 65},
+      {name: "t8r", price: 55},
+      {name: "q2w", price: 50}
     ],
     "3n": [
       {name: "123", price: 50},
-      {name: "789", price: 45}
+      {name: "789", price: 45},
+      {name: "456", price: 40},
+      {name: "321", price: 38}
     ],
     "4l": [
       {name: "love", price: 120},
-      {name: "fire", price: 110}
+      {name: "fire", price: 110},
+      {name: "star", price: 115},
+      {name: "moon", price: 108}
     ],
     "4c": [
       {name: "4b7c", price: 95},
-      {name: "m8n2", price: 90}
+      {name: "m8n2", price: 90},
+      {name: "k9p3", price: 88},
+      {name: "j7q1", price: 85}
     ],
     "4n": [
       {name: "2023", price: 60},
-      {name: "4040", price: 55}
+      {name: "4040", price: 55},
+      {name: "8080", price: 58},
+      {name: "9090", price: 57}
     ]
   };
 
@@ -296,7 +376,6 @@
 
   function showNotification() {
     notificationOverlay.classList.add('show');
-    // Trap focus inside notification for accessibility
     notificationOverlay.focus();
   }
 
@@ -304,18 +383,39 @@
     notificationOverlay.classList.remove('show');
   }
 
-  // Nav buttons category switch
-  navButtons.forEach(button => {
+  // Handle keyboard focus for tabs
+  navButtons.forEach((button, idx) => {
     button.addEventListener('click', () => {
-      navButtons.forEach(btn => btn.classList.remove('active'));
+      navButtons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-selected', 'false');
+        btn.tabIndex = -1;
+      });
       button.classList.add('active');
+      button.setAttribute('aria-selected', 'true');
+      button.tabIndex = 0;
+      button.focus();
       renderUsernames(button.getAttribute('data-category'));
+    });
+
+    // Keyboard navigation between tabs (Left/Right arrows)
+    button.addEventListener('keydown', (e) => {
+      let newIndex = null;
+      if (e.key === 'ArrowRight') {
+        newIndex = (idx + 1) % navButtons.length;
+        e.preventDefault();
+      } else if (e.key === 'ArrowLeft') {
+        newIndex = (idx - 1 + navButtons.length) % navButtons.length;
+        e.preventDefault();
+      }
+      if (newIndex !== null) {
+        navButtons[newIndex].click();
+      }
     });
   });
 
   notificationClose.addEventListener('click', hideNotification);
 
-  // Close notification on clicking outside the box or pressing Escape
   notificationOverlay.addEventListener('click', e => {
     if(e.target === notificationOverlay) hideNotification();
   });
@@ -326,7 +426,7 @@
     }
   });
 
-  // Initial load
+  // Initial render
   renderUsernames('3l');
 </script>
 
