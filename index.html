@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Claimed Discord Usernames</title>
+  <title>claimuser.xyz</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * {
@@ -44,7 +44,6 @@
       padding: 25px 30px;
       margin-bottom: 35px;
       backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
       border: 1px solid rgba(255, 255, 255, 0.12);
       transition: 0.3s ease;
     }
@@ -73,7 +72,6 @@
       border-radius: 8px;
       font-size: 1rem;
       font-weight: 500;
-      transition: background 0.2s ease;
       backdrop-filter: blur(6px);
       position: relative;
       padding-left: 24px;
@@ -107,7 +105,6 @@
       inset: 0;
       background: rgba(0, 0, 0, 0.4);
       backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -124,7 +121,6 @@
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.2);
       backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
       border-radius: 20px;
       padding: 30px 40px;
       max-width: 500px;
@@ -197,7 +193,7 @@
 
   <!-- Main Content -->
   <div class="wrapper" id="mainContent">
-    <h1>Usernames:</h1>
+    <h1>Usernames: </h1>
 
     <!-- 4Ls Section -->
     <div class="category">
@@ -232,12 +228,36 @@
   <!-- Discord Button -->
   <a href="https://discord.gg/claimuser" class="discord-btn" target="_blank">Join My Discord</a>
 
-  <!-- Script -->
+  <!-- Scripts -->
   <script>
-    const overlay = document.getElementById('overlay');
-    window.addEventListener('click', () => {
-      overlay.classList.add('hidden');
+    // Overlay close on click
+    document.getElementById('overlay').addEventListener('click', () => {
+      document.getElementById('overlay').classList.add('hidden');
     });
+
+    // Typing animated tab title
+    const titleText = "claimuser.xyz";
+    let index = 0;
+    let typing = true;
+
+    function animateTitle() {
+      if (typing) {
+        document.title = titleText.slice(0, index++);
+        if (index > titleText.length) {
+          typing = false;
+          setTimeout(animateTitle, 2000); // Pause after full title
+          return;
+        }
+      } else {
+        document.title = titleText.slice(0, --index);
+        if (index === 0) {
+          typing = true;
+        }
+      }
+      setTimeout(animateTitle, typing ? 150 : 100);
+    }
+
+    animateTitle();
   </script>
 </body>
 </html>
