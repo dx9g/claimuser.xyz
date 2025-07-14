@@ -3,459 +3,202 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Username Store</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>My Discord Accounts</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * {
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
     }
 
     body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: #0f1218;
-      color: #fff;
-      overflow-x: hidden;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #6a00ff, #9b4dff);
+      color: white;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
     }
 
-    header {
+    .wrapper {
+      max-width: 1000px;
+      width: 100%;
+      opacity: 1;
+      transition: opacity 0.6s ease;
+    }
+
+    h1 {
       text-align: center;
-      padding: 2rem 1rem 1rem;
-      font-size: 2.6rem;
-      font-weight: 700;
-      background: linear-gradient(145deg, #0f131a, #141924);
-      color: #39d;
-      letter-spacing: 0.03em;
-    }
-
-    .main-header-container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 1rem;
-    }
-
-    .controls-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      margin: 1rem 0;
-    }
-
-    .search-filter {
-      display: flex;
-      gap: 0.8rem;
-      align-items: center;
-    }
-
-    .search-box {
-      position: relative;
-    }
-
-    .search-box input {
-      padding: 0.5rem 2.5rem 0.5rem 1rem;
-      border-radius: 999px;
-      border: none;
-      background: #1a1e25;
-      color: #fff;
-      font-size: 1rem;
-      width: 180px;
-    }
-
-    .search-box svg {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 18px;
-      height: 18px;
-      fill: #888;
-      pointer-events: none;
-    }
-
-    nav {
-      display: flex;
-      overflow-x: auto;
-      gap: 1rem;
-      padding: 0.8rem 0 1rem;
-      scroll-behavior: smooth;
-    }
-
-    nav::-webkit-scrollbar {
-      height: 6px;
-    }
-
-    nav::-webkit-scrollbar-thumb {
-      background: #39d;
-      border-radius: 4px;
-    }
-
-    nav button {
-      flex: 0 0 auto;
-      background: #1a1e25;
-      border: 1px solid transparent;
-      padding: 0.8rem 1.4rem;
-      border-radius: 999px;
-      color: #fff;
+      margin-bottom: 40px;
+      font-size: 2.5rem;
       font-weight: 600;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 0 transparent;
-      cursor: pointer;
     }
 
-    nav button:hover {
-      background: #273340;
-      border-color: #39d;
-      box-shadow: 0 0 8px #39d4;
+    .category {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 20px 30px;
+      margin-bottom: 30px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      transition: 0.3s ease;
     }
 
-    nav button.active {
-      background: #39d;
-      color: #000;
-      box-shadow: 0 0 12px #39d9;
-      border: none;
+    .category:hover {
+      transform: scale(1.01);
     }
 
-    main {
-      padding: 1rem 1rem 2rem;
-      max-width: 1100px;
-      margin: 0 auto;
+    .category h2 {
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+      font-weight: 600;
     }
 
     .username-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 1.6rem 2.2rem;
-    }
-
-    .username-card {
-      background: #161b22;
-      border-radius: 16px;
-      padding: 1.4rem 1.2rem;
-      text-align: center;
-      box-shadow: 0 0 14px rgba(0,0,0,0.25), 0 0 8px #39d2;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-    }
-
-    .username-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 0 20px #39d6;
-    }
-
-    .username-card span {
-      font-size: 1.4rem;
-      font-weight: 600;
-      display: block;
-      margin-bottom: 0.6rem;
-    }
-
-    .price {
-      font-size: 1.1rem;
-      color: #39d;
-      margin-bottom: 0.7rem;
-      font-weight: 500;
-    }
-
-    .btn-buy {
-      background: #39d;
-      border: none;
-      color: #000;
-      padding: 0.55rem 1.2rem;
-      border-radius: 999px;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: background 0.3s, transform 0.2s;
-      box-shadow: 0 0 6px #39d4;
-    }
-
-    .btn-buy:hover {
-      background: #29c;
-      box-shadow: 0 0 12px #29c9;
-      transform: scale(1.04);
-    }
-
-    #notification-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.6);
       display: flex;
-      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .username {
+      background: rgba(255, 255, 255, 0.12);
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: background 0.2s ease;
+      cursor: default;
+      backdrop-filter: blur(8px);
+    }
+
+    .username:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    @media (max-width: 600px) {
+      .username-list {
+        flex-direction: column;
+      }
+
+      .username {
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+    /* Overlay */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      display: flex;
       align-items: center;
-      z-index: 10;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.6s ease;
+    }
+
+    .overlay.hidden {
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.4s ease;
     }
 
-    #notification-overlay.show {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    #notification-box {
-      background: #1b1f27;
-      padding: 2rem 2.5rem;
-      border-radius: 18px;
-      max-width: 360px;
-      width: 90%;
+    .popup {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 30px 40px;
+      max-width: 500px;
       text-align: center;
-      box-shadow: 0 0 20px #39d6;
-      position: relative;
+      color: white;
+      animation: fadeInUp 0.8s ease;
     }
 
-    #notification-box h2 {
-      margin-top: 0;
-      font-size: 1.6rem;
-      font-weight: 700;
-    }
-
-    #notification-box p {
-      font-size: 1rem;
-      margin-bottom: 1.4rem;
-      color: #ccc;
-    }
-
-    #notification-box a {
-      display: inline-block;
-      padding: 0.6rem 1.5rem;
-      background: #39d;
-      color: #000;
+    .popup h2 {
+      font-size: 1.8rem;
       font-weight: 600;
-      border-radius: 999px;
-      text-decoration: none;
-      transition: background 0.3s;
-      box-shadow: 0 0 10px #39d8;
+      margin-bottom: 15px;
     }
 
-    #notification-box a:hover {
-      background: #26b;
-      box-shadow: 0 0 16px #26b9;
+    .popup p {
+      font-size: 1rem;
+      line-height: 1.6;
+      opacity: 0.9;
     }
 
-    #notification-close {
-      position: absolute;
-      top: 14px; right: 14px;
-      background: none;
-      border: none;
-      color: #999;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-
-    #notification-close:hover {
-      color: #fff;
-    }
-
-    /* Rain effect styles */
-    .rain {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: -1;
-    }
-
-    .rain-drop {
-      position: absolute;
-      width: 2px;
-      height: 16px;
-      background: linear-gradient(to bottom, transparent, #39d);
-      opacity: 0.4;
-      animation: rainFall linear infinite;
-    }
-
-    @keyframes rainFall {
+    @keyframes fadeInUp {
       0% {
-        transform: translateY(-100px) translateX(0) rotate(-15deg);
+        transform: translateY(30px);
         opacity: 0;
-      }
-      50% {
-        opacity: 0.4;
       }
       100% {
-        transform: translateY(100vh) translateX(50px) rotate(-15deg);
-        opacity: 0;
-      }
-    }
-
-    @media (max-width: 720px) {
-      header {
-        font-size: 2.2rem;
-      }
-      nav button {
-        font-size: 0.9rem;
-        padding: 0.6rem 1rem;
-      }
-      .username-card span {
-        font-size: 1.2rem;
-      }
-      .btn-buy {
-        font-size: 0.95rem;
-      }
-      .search-box input {
-        width: 150px;
+        transform: translateY(0);
+        opacity: 1;
       }
     }
   </style>
 </head>
 <body>
 
-<div class="rain" id="rain-container"></div>
-
-<header>
-  <div class="main-header-container">
-    Username Store
+  <!-- Overlay Notification -->
+  <div class="overlay" id="overlay">
+    <div class="popup">
+      <h2>Welcome to My Discord Store</h2>
+      <p>This website lists exclusive Discord usernames that are owned and sold by me.<br><br>
+      You’ll find rare 4-letter tags, numeric usernames, and branded handles ready for transfer.</p>
+      <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.7;">Click anywhere to enter</p>
+    </div>
   </div>
-</header>
 
-<main>
-  <div class="main-header-container">
-    <div class="controls-top">
-      <nav role="tablist" aria-label="Username categories">
-        <button class="active" role="tab" aria-selected="true" data-category="3l">3L</button>
-        <button role="tab" data-category="3c">3C</button>
-        <button role="tab" data-category="3n">3N</button>
-        <button role="tab" data-category="4l">4L</button>
-        <button role="tab" data-category="4c">4C</button>
-        <button role="tab" data-category="4n">4N</button>
-      </nav>
-      <div class="search-filter">
-        <div class="search-box">
-          <input type="text" id="searchInput" placeholder="Search...">
-          <svg viewBox="0 0 24 24"><path d="M10,2A8,8 0 0,1 18,10C18,12.21 17.21,14.21 15.9,15.63L21.71,21.46L20.29,22.88L14.46,17.05C13.03,18.36 11.03,19.14 9,19.14A8,8 0 0,1 10,2M10,4A6,6 0 0,0 4,10C4,13.31 6.69,16 10,16A6,6 0 0,0 16,10C16,6.69 13.31,4 10,4Z" /></svg>
-        </div>
+  <!-- Main Website -->
+  <div class="wrapper" id="mainContent">
+    <h1>Available Discord Usernames</h1>
+
+    <!-- 4Ls Section -->
+    <div class="category">
+      <h2>4Ls</h2>
+      <div class="username-list">
+        <div class="username">@qxle</div>
+        <div class="username">@zeph</div>
+        <div class="username">@abcz</div>
+      </div>
+    </div>
+
+    <!-- 4Ns Section -->
+    <div class="category">
+      <h2>4Ns</h2>
+      <div class="username-list">
+        <div class="username">@8391</div>
+        <div class="username">@2049</div>
+        <div class="username">@7002</div>
+      </div>
+    </div>
+
+    <!-- Premium Tags Section -->
+    <div class="category">
+      <h2>Premium Tags</h2>
+      <div class="username-list">
+        <div class="username">@buylitecoin</div>
+        <div class="username">@smsypremium</div>
       </div>
     </div>
   </div>
 
-  <section class="username-list" id="username-container"></section>
-</main>
+  <!-- Script to Hide Overlay -->
+  <script>
+    const overlay = document.getElementById('overlay');
+    const mainContent = document.getElementById('mainContent');
 
-<div id="notification-overlay">
-  <div id="notification-box">
-    <button id="notification-close" aria-label="Close notification">&times;</button>
-    <h2>Buy Usernames on Our Discord</h2>
-    <p>Please join our Discord server to purchase usernames.</p>
-    <a href="https://discord.gg/claimuser" target="_blank" rel="noopener noreferrer">Join Discord</a>
-  </div>
-</div>
-
-<script>
-  const usernames = {
-    "3l": [
-    "3c": [
-    "3n": [
-    "4l": [
-      {name: "@iurq", price: 4.29}, 
-      {name: "@hnhl", price: 4.89}, 
-      {name: "@qgaq", price: 4.89}, 
-      {name: "@dunw", price: 4.69}, 
-      {name: "@iepz", price: 3.59}, 
-      {name: "@gsig", price: 3.79}, 
-      {name: "@ojxb", price: 4.29}, 
-      {name: "2hqsq", price: 4.89}, 
-      {name: "@ydex", price: 3.59}, 
-      {name: "@vpto", price: 3.59},
-      {name: "@uqzq", price: 4.89} // Username not listed in prompt, set to 0
-    ],
-    "4n": [ 
-      {name: "@1831", price: 28.49}
-    ],
-    "4c": [
-      // Placeholder for 4c, assuming no listed prices, set to 0 for any if they existed in the original data.
-    ]
-  };
-
-  const container = document.getElementById('username-container');
-  const navButtons = document.querySelectorAll('nav button');
-  const overlay = document.getElementById('notification-overlay');
-  const closeBtn = document.getElementById('notification-close');
-  const searchInput = document.getElementById('searchInput');
-  const rainContainer = document.getElementById('rain-container');
-
-  let currentCategory = "3l";
-
-  function renderUsernames(category) {
-    container.innerHTML = '';
-    if (!usernames[category]) return;
-
-    const searchText = searchInput.value.trim().toLowerCase();
-
-    // Filter usernames based on whether the name *starts* with the search text.
-    // This ensures "d" only matches "dunw" and not "hjde".
-    usernames[category]
-      .filter(u => !searchText || u.name.toLowerCase().startsWith(searchText))
-      .forEach(u => {
-        const card = document.createElement('div');
-        card.className = 'username-card';
-        card.innerHTML = `
-          <span>${u.name}</span>
-          <div class="price">$${u.price.toFixed(2)}</div>
-          <button class="btn-buy">Buy</button>
-        `;
-        card.querySelector('.btn-buy').addEventListener('click', () => showNotification());
-        container.appendChild(card);
-      });
-  }
-
-  function showNotification() {
-    overlay.classList.add('show');
-    // We don't focus the overlay directly as it's a container; let's ensure screen readers can interact if needed, but for visual notification, adding the class is enough.
-  }
-
-  function hideNotification() {
-    overlay.classList.remove('show');
-  }
-
-  closeBtn.addEventListener('click', hideNotification);
-  overlay.addEventListener('click', e => {
-    if (e.target === overlay) hideNotification();
-  });
-  window.addEventListener('keydown', e => {
-    if (e.key === "Escape" && overlay.classList.contains('show')) hideNotification();
-  });
-
-  navButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      navButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentCategory = btn.getAttribute('data-category');
-      renderUsernames(currentCategory);
+    window.addEventListener('click', () => {
+      overlay.classList.add('hidden');
     });
-  });
-
-  searchInput.addEventListener('input', () => renderUsernames(currentCategory));
-
-  // Rain effect generation
-  function createRain() {
-    const totalDrops = 80;
-    const viewportWidth = window.innerWidth;
-    
-    for (let i = 0; i < totalDrops; i++) {
-      const drop = document.createElement('div');
-      drop.className = 'rain-drop';
-      
-      const startX = Math.random() * viewportWidth;
-      const animationDuration = 1.5 + Math.random() * 1.5;
-      const delay = Math.random() * 5;
-      
-      drop.style.left = `${startX}px`;
-      drop.style.animationDuration = `${animationDuration}s`;
-      drop.style.animationDelay = `${delay}s`;
-      
-      rainContainer.appendChild(drop);
-    }
-  }
-
-  // Initial setup
-  createRain();
-  renderUsernames(currentCategory);
-</script>
-
+  </script>
 </body>
 </html>
