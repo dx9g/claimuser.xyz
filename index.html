@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Discord Accounts</title>
+  <title>Claimed Discord Usernames</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * {
@@ -15,15 +15,16 @@
 
     body {
       min-height: 100vh;
-      background: linear-gradient(135deg, #6a00ff, #9b4dff);
+      background: linear-gradient(145deg, #6a00ff 0%, #1e0033 70%, #000000 100%);
       color: white;
-      padding: 40px 20px;
+      padding: 40px 20px 100px;
       display: flex;
       justify-content: center;
+      scroll-behavior: smooth;
     }
 
     .wrapper {
-      max-width: 1000px;
+      max-width: 900px;
       width: 100%;
       opacity: 1;
       transition: opacity 0.6s ease;
@@ -31,19 +32,20 @@
 
     h1 {
       text-align: center;
-      margin-bottom: 40px;
-      font-size: 2.5rem;
+      margin-bottom: 50px;
+      font-size: 2.8rem;
       font-weight: 600;
+      letter-spacing: -0.5px;
     }
 
     .category {
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.05);
       border-radius: 16px;
-      padding: 20px 30px;
-      margin-bottom: 30px;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 25px 30px;
+      margin-bottom: 35px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       transition: 0.3s ease;
     }
 
@@ -52,40 +54,50 @@
     }
 
     .category h2 {
-      font-size: 1.4rem;
-      margin-bottom: 16px;
+      font-size: 1.5rem;
+      margin-bottom: 18px;
       font-weight: 600;
+      border-left: 4px solid #a855f7;
+      padding-left: 10px;
     }
 
     .username-list {
       display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+      flex-direction: column;
+      gap: 12px;
     }
 
     .username {
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.07);
       padding: 10px 16px;
-      border-radius: 12px;
+      border-radius: 8px;
       font-size: 1rem;
       font-weight: 500;
       transition: background 0.2s ease;
-      cursor: default;
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(6px);
+      position: relative;
+      padding-left: 24px;
+    }
+
+    .username::before {
+      content: "•";
+      color: #a855f7;
+      position: absolute;
+      left: 10px;
+      font-size: 1.2rem;
     }
 
     .username:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.12);
     }
 
     @media (max-width: 600px) {
-      .username-list {
-        flex-direction: column;
+      .username {
+        font-size: 0.95rem;
       }
 
-      .username {
-        width: 100%;
-        text-align: center;
+      .category h2 {
+        font-size: 1.2rem;
       }
     }
 
@@ -143,6 +155,32 @@
         opacity: 1;
       }
     }
+
+    /* Discord Join Button */
+    .discord-btn {
+      position: fixed;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #5865F2;
+      color: white;
+      padding: 12px 20px 12px 44px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      display: inline-block;
+      transition: 0.3s ease;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+      background-image: url('https://cdn-icons-png.flaticon.com/512/2111/2111370.png');
+      background-repeat: no-repeat;
+      background-size: 18px;
+      background-position: 16px center;
+    }
+
+    .discord-btn:hover {
+      background-color: #4752C4;
+    }
   </style>
 </head>
 <body>
@@ -150,16 +188,16 @@
   <!-- Overlay Notification -->
   <div class="overlay" id="overlay">
     <div class="popup">
-      <h2>Welcome to My Discord Store</h2>
-      <p>This website lists exclusive Discord usernames that are owned and sold by me.<br><br>
-      You’ll find rare 4-letter tags, numeric usernames, and branded handles ready for transfer.</p>
-      <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.7;">Click anywhere to enter</p>
+      <h2>Welcome</h2>
+      <p>This site lists rare, clean, and high-quality Discord usernames I personally own and offer.<br><br>
+      Explore different tag types below and join the server for updates.</p>
+      <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.7;">Click anywhere to continue</p>
     </div>
   </div>
 
-  <!-- Main Website -->
+  <!-- Main Content -->
   <div class="wrapper" id="mainContent">
-    <h1>Available Discord Usernames</h1>
+    <h1>My Discord Usernames</h1>
 
     <!-- 4Ls Section -->
     <div class="category">
@@ -181,9 +219,9 @@
       </div>
     </div>
 
-    <!-- Premium Tags Section -->
+    <!-- Special Handles Section -->
     <div class="category">
-      <h2>Premium Tags</h2>
+      <h2>Special Handles</h2>
       <div class="username-list">
         <div class="username">@buylitecoin</div>
         <div class="username">@smsypremium</div>
@@ -191,11 +229,12 @@
     </div>
   </div>
 
-  <!-- Script to Hide Overlay -->
+  <!-- Discord Button -->
+  <a href="https://discord.gg/claimuser" class="discord-btn" target="_blank">Join My Discord</a>
+
+  <!-- Script -->
   <script>
     const overlay = document.getElementById('overlay');
-    const mainContent = document.getElementById('mainContent');
-
     window.addEventListener('click', () => {
       overlay.classList.add('hidden');
     });
